@@ -3,28 +3,20 @@ const { execSync } = require('child_process')
 const { exec, execFile } = require('child_process')
 
 execSync('node sandbox.js')
-
-console.log('???')
-const res = execSync('ls')
-console.log(res)
-
-exec('echo "The \\$HOME variable is $HOME"')
+const sandboxFileName = 'sandbox.js'
+execSync(`node ${sandboxFileName}`)
 
 const options = {}
 
-// options is optional
-glob('**/test.*.js', options, function (er, files) {
+let filePaths = []
+glob('**/test.*.js', options, (er, files) => {
   console.log(files)
+  filePaths = files
 
   files.map(fileName => {
     console.log(fileName)
-    execSync(`cat ${fileName}`)
-    execSync('ls')
-    exec('ls')
+    execSync(`node ${fileName}`)
   })
-
-  // files is an array of filenames.
-  // If the `nonull` option is set, and nothing
-  // was found, then files is ["**/*.js"]
-  // er is an error object or null.
 })
+
+console.log(filePaths)
