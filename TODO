@@ -1,0 +1,10 @@
+必須
+テストファイルを見つける。(test)ファイル名に接頭辞のtest.が付いていればtestファイルと判断する。
+テストファイルの中で、テストを行う。
+const t = require('helloUnitTest')
+t.assert
+で良いか。
+
+後回し。
+適切なエラーメッセージを出力する（現状は、passかpassしなかったかの二種類しかない。）
+deepEqualをassertに入れる。現在はshallw equalなので、object同士の比較が上手くいかない。
