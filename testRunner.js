@@ -51,6 +51,8 @@ const runTest = dir => {
   // })
 }
 
-const result = runTest(__dirname)
+// const result = runTest(__dirname)
 
 // 完成した。
+
+module.exports = { runTest }
