@@ -1,6 +1,6 @@
 const { assert } = require('./assert')
 
-exports.executeTest = (received, expected) => {
+const executeTest = (received, expected) => {
   const isPass = assert(received, expected)
 
   if (isPass) {
@@ -9,3 +9,5 @@ exports.executeTest = (received, expected) => {
     console.warn('test failed')
   }
 }
+
+module.exports = { executeTest }
