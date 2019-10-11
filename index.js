@@ -1,5 +1,3 @@
-const { executeTest } = require('./executeTest')
-
-const assert = executeTest
+const { assert } = require('./assert')
 
 module.exports = { assert }
