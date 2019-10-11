@@ -1,1 +1,5 @@
-console.log('executed testExample2')
+// 失敗するテストを記述
+
+const { assert } = require('../index')
+
+assert(1, 2)
