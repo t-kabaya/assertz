@@ -10,8 +10,12 @@ helloUnitTestはシンプルな、マッチャーが１つしかないテスト�
 ``` js
 const assert = require('helloSimpleTest');
 
+const sum = (a, b) => {
+  return a + b
+}
+
 // 1 + 1 must be 2
-assert(1 + 1, 2)
+assert(sum(1, 1), 2)
 ```
 
 # run
