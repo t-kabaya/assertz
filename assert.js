@@ -1,5 +1,8 @@
-exports.assert = (received, expected) => {
-  return Object.is(received, expected)
+const _ = require('lodash')
+
+const assert = (received, expected) => {
+  // for deepEqual
+  return _.isEqual(received, expected)
 }
 
-// exports = { assert }
+module.exports = { assert }
