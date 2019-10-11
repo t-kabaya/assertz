@@ -1,8 +1,8 @@
-const { assert } = require('./assert')
 const { showTestFailureDiff } = require('./showTestFailureDiff')
+const _ = require('lodash')
 
 const executeTest = (received, expected) => {
-  const isPass = assert(received, expected)
+  const isPass = _.isEqual(received, expected)
 
   if (isPass) {
     console.warn('test passed')
