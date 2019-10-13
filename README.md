@@ -15,12 +15,12 @@ assertz offer only one matcher.
 Install assertz using yarn:
 
 ```
-yarn add --dev assertz
+yarn add --dev git+https://git@github.com/t-kabaya/assertz.git
 ```
 Or npm:
 
 ```
-npm install --save-dev assertz
+npm install --save-dev git+https://git@github.com/t-kabaya/assertz.git
 ```
 
 Let's get started by writing a test for a function that adds two numbers. First, create a sum.js file:
@@ -32,7 +32,8 @@ const sum = (a, b) => {
 module.exports = sum
 ```
 
-Then, create a file named sum.test.js. Test file must ends with *.test.js
+Then, create a file named sum.test.js.
+CAUTION: Test file must ends with *.test.js
 
 ``` js
 const assert = require('assertz')
