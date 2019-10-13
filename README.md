@@ -52,7 +52,18 @@ Add the following section to your package.json:
   }
 }
 ```
-Finally, run yarn test or npm run test and assertz will print this message:
+Finally, run
+
+```
+yarn test
+```
+
+or
+
+```
+npm run test 
+```
+and assertz will print this message:
 
 ```
 sum.test.js
