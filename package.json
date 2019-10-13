@@ -1,6 +1,6 @@
 {
   "name": "assertz",
-  "version": "1.0.0",
+  "version": "3.4.0",
   "description": "super simple one liner unit test library",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,6 @@
   "author": "t-kabaya",
   "license": "ISC",
   "dependencies": {
-    "assertz": "^1.0.0",
     "chalk": "^2.4.2",
     "lodash": "^4.17.15"
   }
