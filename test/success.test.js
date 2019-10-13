@@ -1,4 +1,4 @@
-const { assert } = require('../index')
+const assert = require('../index')
 
 assert(1, 3)
 

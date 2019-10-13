@@ -2,12 +2,13 @@
 Developing now!
 Don't use yet.
 
-## 概要
+## 
+assertz is super simple test library.
+Do we need toBeTruthy or toBeOdd?
+I need just one matcher like node.js's assert.
 
-jestは複雑すぎる。
-helloUnitTestはシンプルな、マッチャーが１つしかないテストフレームワークです。
+assertz offer only one matcher.
 
-開発中です。
 
 # Getting Started
 Install assertz using yarn:
@@ -32,18 +33,20 @@ Then, create a file named sum.test.js. Test file must ends with *.test.js
 const assert = require('assertz')
 const sum = require('./sum')
 
-// adds 1 + 2 to equal 3
-assert(sum(1, 2), 3)
+// adds 1 + 1 to equal 4
+assert(sum(1, 1), 4)
 ```
 
 Add the following section to your package.json:
 
 {
   "scripts": {
-    "test": "assertz"
+    "test": "node ./node_modules/assertz/index.js"
   }
 }
 Finally, run yarn test or npm run test and assertz will print this message:
 
-PASS  ./sum.test.js
-✓ adds 1 + 2 to equal 3 (5ms)
+sum.test.js
+Difference:
+- 4
++ 2
