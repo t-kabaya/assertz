@@ -1,6 +1,6 @@
 // 失敗するテストを記述
 
-const assert = require('../index')
+const assert = require('assertz')
 
 // number
 assert(1, 2)
