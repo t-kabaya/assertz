@@ -11,7 +11,7 @@ ansi-styles@^3.2.1:
 
 "assertz@git+https://git@github.com/t-kabaya/assertz.git":
   version "3.4.0"
-  resolved "git+https://git@github.com/t-kabaya/assertz.git#7621c94a68bb0f0cba5accc7cecf3b35795d2202"
+  resolved "git+https://git@github.com/t-kabaya/assertz.git#d3db784b16c87bd8cb3b77128045bb82822cfe74"
   dependencies:
     chalk "^2.4.2"
     lodash "^4.17.15"
