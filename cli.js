@@ -1,3 +1,5 @@
 const { runTest } = require('./testRunner')
 
-runTest('./node_modules/assertz/' + __dirname)
+// remove /node_modules/assertz\
+
+runTest(__dirname.replace('/node_modules/assertz', ''))
