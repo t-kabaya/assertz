@@ -4,7 +4,7 @@
   "description": "super simple one liner unit test library",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/assertz/cli.js",
+    "test": "cd e2e && node ./node_modules/assertz/cli.js",
     "publish": "npm publish",
     "assertz": "assertz"
   },
@@ -17,5 +17,14 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "husky": "^3.0.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
   }
 }
