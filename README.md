@@ -44,7 +44,7 @@ Add the following section to your package.json:
 ```json
 {
   "scripts": {
-    "test": "node ./node_modules/assertz/index.js"
+    "test": "node ./node_modules/assertz/cli.js"
   }
 }
 ```
