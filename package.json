@@ -4,7 +4,7 @@
   "description": "super simple one liner unit test library",
   "main": "index.js",
   "scripts": {
-    "test": "cd e2e && node ./node_modules/assertz/cli.js",
+    "test": "node cliForDevelop",
     "publish": "npm publish",
     "assertz": "assertz"
   },

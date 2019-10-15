@@ -12,7 +12,7 @@ const executeTest = (path, fileName) => {
 const runTest = dir => {
   const fileNames = fs.readdirSync(dir)
 
-  const testFiles = fileNames.filter(f => f.endsWith('.js'))
+  const testFiles = fileNames.filter(f => f.endsWith('.test.js'))
   testFiles.forEach(file => executeTest('/' + dir + '/' + file, file))
 
   const projectFileNames = fileNames.filter(
@@ -23,16 +23,12 @@ const runTest = dir => {
 
   const directories = projectFileNames.filter(f => {
     const stat = fs.statSync(dir + '/' + f)
-    if (stat) {
-      return stat.isDirectory()
-    } else {
-      return false
-    }
+    if (!stat) return false
+
+    return stat.isDirectory()
   })
 
-  directories.map(childDir => {
-    runTest(dir + '/' + childDir)
-  })
+  directories.map(childDir => runTest(dir + '/' + childDir))
 }
 
 module.exports = { runTest }

@@ -8,10 +8,12 @@ assert(2, 2)
 const obj1 = { foo: 'foo' }
 const obj2 = { foo: 'foo' }
 
-assert(obj1, obj2)(
+assert(obj1, obj2)
+
+{
   // async test
-  async () => {
+  ;(async () => {
     const apiResponse = await 777
-    assert(apiResponse, 7777)
-  }
-)()
+    assert(apiResponse, 777)
+  })()
+}
