@@ -1,9 +1,7 @@
-// // __dirnameは本番環境では使えないので、../../などに変える。
-// const fileNames = fs.readdirSync(__dirname)
+const fs = require('fs')
 
 const executeTest = (path, fileName) => {
   // inheritがキモ。consoleの出力を共有出来る。
-  // console.log('executeTest' + file)
   if (path && path.endsWith('.test.js')) {
     require('child_process').execSync(`node ${path} fileName=${fileName}`, {
       stdio: 'inherit'
@@ -11,7 +9,6 @@ const executeTest = (path, fileName) => {
   }
 }
 
-const fs = require('fs')
 const runTest = dir => {
   const fileNames = fs.readdirSync(dir)
 
