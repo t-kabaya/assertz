@@ -1,3 +1,3 @@
 const { runTest } = require('./testRunner')
 
-runTest(__dirname)
+runTest('./node_modules/assertz/' + __dirname)
