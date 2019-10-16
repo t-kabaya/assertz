@@ -1,20 +1,24 @@
 const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
+const messageStore = require('./store')
 
+const fileName = process.argv[2].replace(/fileName=/, '')
+
+// test resultを、storeにプッシュする
 const assert = (received, expected) => {
   const isPass = _.isEqual(received, expected)
 
   if (isPass) {
     // テストが、成功したという情報は、いらない。
-    console.warn('passed')
+    const successMessage = '✔' + fileName + '\n' + 'passed'
+    messageStore.push({ successMessage })
   } else {
-    const fileName = process.argv[2].replace(/fileName=/, '')
     const failureMessage = createTestFailureMessage(
       received,
       expected,
       fileName
     )
-    console.log(failureMessage)
+    messageStore.push({ failureMessage })
   }
 }
 

@@ -1,7 +1,6 @@
 const chalk = require('chalk')
 
 const createTestFailureMessage = (received, expected, fileName) => {
-  const log = console.log
   const failureMessage =
     chalk.gray(fileName) +
     '\n' +
