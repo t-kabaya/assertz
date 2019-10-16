@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node cliForDevelop",
     "publish": "npm publish",
+    "testDebug": "node test/failure.test.js",
     "assertz": "assertz"
   },
   "keywords": [

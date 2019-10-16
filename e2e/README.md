@@ -1,7 +1,2 @@
-test folder
-
-to test production assertz
-
-
-yarn install
-yarn test
+e2eでは、
+githubのmusterからクローンしてきたassertzを使用し、テストを記述する。

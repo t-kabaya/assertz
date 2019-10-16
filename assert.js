@@ -1,4 +1,4 @@
-const { showTestFailureDiff } = require('./showTestFailureDiff')
+const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
 
 const assert = (received, expected) => {
@@ -6,10 +6,15 @@ const assert = (received, expected) => {
 
   if (isPass) {
     // テストが、成功したという情報は、いらない。
-    // console.warn('test passed')
+    console.warn('passed')
   } else {
     const fileName = process.argv[2].replace(/fileName=/, '')
-    showTestFailureDiff(received, expected, fileName)
+    const failureMessage = createTestFailureMessage(
+      received,
+      expected,
+      fileName
+    )
+    console.log(failureMessage)
   }
 }
 
