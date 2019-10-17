@@ -7,7 +7,8 @@
     "test": "node cliForDevelop",
     "publish": "npm publish",
     "testDebug": "node test/failure.test.js",
-    "assertz": "assertz"
+    "assertz": "assertz",
+    "ava": "ava"
   },
   "keywords": [
     "unit test",
@@ -20,6 +21,7 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
+    "ava": "^2.4.0",
     "husky": "^3.0.9"
   },
   "husky": {
@@ -27,5 +29,10 @@
       "pre-commit": "yarn test",
       "pre-push": "yarn test"
     }
+  },
+  "ava": {
+    "files": [
+			"ava/*"
+		]
   }
 }

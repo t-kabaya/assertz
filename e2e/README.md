@@ -1,2 +1,0 @@
-e2eでは、
-githubのmusterからクローンしてきたassertzを使用し、テストを記述する。
