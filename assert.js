@@ -1,6 +1,6 @@
 const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
-const messageStore = require('./store')
+const testResultStore = require('./store')
 
 const fileName = __dirname + process.argv[2].replace(/fileName=/, '')
 
@@ -11,14 +11,16 @@ const assert = (received, expected) => {
   if (isPass) {
     // テストが、成功したという情報は、いらない。
     const successMessage = '✔' + fileName + '\n' + 'passed'
-    messageStore.push({ successMessage })
+    testResultStore.push({ successMessage })
+    console.log(successMessage)
   } else {
     const failureMessage = createTestFailureMessage(
       received,
       expected,
       fileName
     )
-    messageStore.push({ failureMessage })
+    testResultStore.push({ failureMessage })
+    console.log(failureMessage)
   }
 }
 

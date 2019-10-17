@@ -4,7 +4,7 @@
   "description": "super simple one liner unit test library",
   "main": "index.js",
   "scripts": {
-    "test": "node cliForDevelop",
+    "test": "node cliDev",
     "publish": "npm publish",
     "testDebug": "node test/failure.test.js",
     "assertz": "assertz",

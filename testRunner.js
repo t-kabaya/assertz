@@ -1,20 +1,21 @@
 const fs = require('fs')
+const { execSync } = require('child_process')
 
-const executeTest = (path, fileName) => {
+const testFileNamePattern = '.test.js'
+
+const execTest = (path, fileName) => {
   // inheritがキモ。consoleの出力を共有出来る。
-  if (!(path && path.endsWith('.test.js'))) return
-
   const config = { stdio: 'inherit' }
-
-  require('child_process').execSync(`node ${path} fileName=${fileName}`, config)
+  execSync(`node ${path} fileName=${fileName}`, config)
 }
 
-const runTest = dir => {
+const findTests = dir => {
   const fileNames = fs.readdirSync(dir)
 
-  const testFiles = fileNames.filter(f => f.endsWith('.test.js'))
-  testFiles.forEach(file => executeTest('/' + dir + '/' + file, file))
+  const testFiles = fileNames.filter(f => f.endsWith(testFileNamePattern))
+  testFiles.forEach(file => execTest('/' + dir + '/' + file, file))
 
+  // gitと、node_modulesを除外
   const projectFileNames = fileNames.filter(
     f => f !== '.git' && f !== 'node_modules'
   )
@@ -28,7 +29,7 @@ const runTest = dir => {
     return stat.isDirectory()
   })
 
-  directories.map(childDir => runTest(dir + '/' + childDir))
+  directories.map(childDir => findTests(dir + '/' + childDir))
 }
 
-module.exports = { runTest }
+module.exports = { findTests }
