@@ -2,7 +2,7 @@ const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
 const messageStore = require('./store')
 
-const fileName = process.argv[2].replace(/fileName=/, '')
+const fileName = __dirname + process.argv[2].replace(/fileName=/, '')
 
 // test resultを、storeにプッシュする
 const assert = (received, expected) => {

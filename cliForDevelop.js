@@ -7,9 +7,13 @@ const showTestResult = require('./showTestResult')
 runTest(__dirname)
 
 const cli = async () => {
-  await runTest(__dirname)
+  try {
+    const isSuccess = await runTest(__dirname)
 
-  showTestResult()
+    showTestResult()
+  } catch (e) {
+    console.log('error at cliForDevelop')
+  }
 }
 
 cli()

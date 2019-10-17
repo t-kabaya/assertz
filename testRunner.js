@@ -2,11 +2,11 @@ const fs = require('fs')
 
 const executeTest = (path, fileName) => {
   // inheritがキモ。consoleの出力を共有出来る。
-  if (path && path.endsWith('.test.js')) {
-    require('child_process').execSync(`node ${path} fileName=${fileName}`, {
-      stdio: 'inherit'
-    })
-  }
+  if (!(path && path.endsWith('.test.js'))) return
+
+  const config = { stdio: 'inherit' }
+
+  require('child_process').execSync(`node ${path} fileName=${fileName}`, config)
 }
 
 const runTest = dir => {
