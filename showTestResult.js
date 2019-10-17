@@ -1,10 +1,10 @@
-const store = require('./store')
+const { testResultStore } = require('./store')
 
 const showTestResult = () => {
   console.log('show Test Result')
-  console.log(store)
+  console.log(testResultStore)
 
-  store.forEach(result => {
+  testResultStore.forEach(result => {
     console.log('result' + result)
   })
 

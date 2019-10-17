@@ -6,14 +6,14 @@ const showTestResult = require('./showTestResult')
 
 findTests(__dirname)
 
-// const cli = async () => {
-//   try {
-//     const isSuccess = await findTests(__dirname)
+const cli = async () => {
+  try {
+    const isSuccess = await findTests(__dirname)
 
-//     showTestResult()
-//   } catch (e) {
-//     console.log('error at cliForDevelop')
-//   }
-// }
+    showTestResult()
+  } catch (e) {
+    console.log('error at cliForDevelop')
+  }
+}
 
-// cli()
+cli()

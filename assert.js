@@ -1,6 +1,6 @@
 const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
-const testResultStore = require('./store')
+const { testResultStore } = require('./store')
 
 const fileName = __dirname + process.argv[2].replace(/fileName=/, '')
 
