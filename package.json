@@ -3,6 +3,7 @@
   "version": "3.4.0",
   "description": "super simple one liner unit test library",
   "main": "index.js",
+  "bin": "cli.js",
   "scripts": {
     "test": "node cliDev",
     "publish": "npm publish",
@@ -18,7 +19,11 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.2",
-    "lodash": "^4.17.15"
+    "commander": "^3.0.2",
+    "globby": "^10.0.1",
+    "lodash": "^4.17.15",
+    "meow": "^5.0.0",
+    "update-notifier": "^3.0.1"
   },
   "devDependencies": {
     "ava": "^2.4.0",
@@ -32,7 +37,7 @@
   },
   "ava": {
     "files": [
-			"ava/*"
-		]
+      "ava/*"
+    ]
   }
 }

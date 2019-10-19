@@ -1,13 +1,7 @@
-const { findTests } = require('./testRunner')
-const showTestResult = require('./showTestResult')
+const cli = require('commander')
 
-// remove /node_modules/assertz\
-const cli = async () => {
-  await findTests(__dirname.replace('/node_modules/assertz', ''))
+cli.option('-h, --help', 'help me')
 
-  // testRunnerの実行後に、以下の、showResultメソッドが呼ばれる。
-  showTestResult()
-  console.log('test end')
-}
+cli.parse(process.argv)
 
-cli()
+console.log('added commander')
