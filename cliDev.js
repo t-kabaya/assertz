@@ -1,19 +1,20 @@
 // testrunner for develop
-const { findTests } = require('./testRunner')
+const { findTests, runTests } = require('./testRunner')
 const showTestResult = require('./showTestResult')
 
-// remove /node_modules/assertz\
+// (__dirname)
 
-findTests(__dirname)
+const paths = findTests(__dirname)
+runTests(paths)
 
-const cli = async () => {
-  try {
-    const isSuccess = await findTests(__dirname)
+// const cli = async () => {
+//   try {
+//     const isSuccess = await runTests(__dirname)
 
-    showTestResult()
-  } catch (e) {
-    console.log('error at cliForDevelop')
-  }
-}
+//     showTestResult()
+//   } catch (e) {
+//     console.log('error at cliForDevelop')
+//   }
+// }
 
-cli()
+// cli()

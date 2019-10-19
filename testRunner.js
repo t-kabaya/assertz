@@ -1,53 +1,40 @@
 const fs = require('fs')
 const { execSync } = require('child_process')
 
-const testFileNamePattern = '.test.js'
-
-const execTests = (testFiles, dir) => {
-  // TODO: fileNameを、テスト結果に載せる。
+const runTests = paths => {
   // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
-  require(path)
+  paths.forEach(file => require(file))
 }
 
-const foundedTests = []
-
-// TODO: findTestsの中で、execTestを実行するのは、関数型らしくない。
-// findTestsで、pathの、配列を作成してから、それを帰り値として、returnし、execTestはそれを引数として取得するようにリファクタリングする。
 const findTests = dir => {
-  const result = []
+  const testPath = []
 
   const walk = dir => {
-    const fileNames = fs.readdirSync(dir)
+    const files = fs.readdirSync(dir)
 
-    // fileNames.forEach()
+    files
+      // test.jsで終わるファイルを、テストファイルと見なす。
+      .filter(f => f.endsWith('.test.js'))
+      .map(file => '/' + dir + '/' + file)
+      .forEach(files => testPath.push(files))
 
-    const testFiles = fileNames.filter(f => f.endsWith(testFileNamePattern))
-    const tmpResult = testFiles.map(file => '/' + dir + '/' + file)
-    // result.push(tmpResult)
-    tmpResult.forEach(files => {
-      result.push(files)
-    })
+    files
+      // .gitと、node_modulesは、エラーを引き起こすので、除外する。
+      .filter(f => f !== '.git')
+      .filter(f => f !== 'node_modules')
+      // フォルダのみ次へ
+      .filter(file => {
+        const stat = fs.statSync(dir + '/' + file)
+        if (!stat) return false
 
-    // gitと、node_modulesを除外
-    const projectFileNames = fileNames.filter(
-      f => f !== '.git' && f !== 'node_modules'
-    )
-
-    if (!projectFileNames) return
-
-    const directories = projectFileNames.filter(f => {
-      const stat = fs.statSync(dir + '/' + f)
-      if (!stat) return false
-
-      return stat.isDirectory()
-    })
-
-    directories.map(childDir => walk(dir + '/' + childDir))
+        return stat.isDirectory()
+      })
+      .forEach(childDir => walk(dir + '/' + childDir))
   }
 
   walk(dir)
 
-  return result
+  return testPath
 }
 
-module.exports = { findTests }
+module.exports = { findTests, runTests }

@@ -2,7 +2,7 @@ const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
 const { testResultStore } = require('./store')
 
-const fileName = 'mockFileName'
+const fileName = 'test failed'
 
 // test resultを、storeにプッシュする
 const assert = (received, expected) => {
