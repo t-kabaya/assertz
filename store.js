@@ -1,5 +1,6 @@
-// failureMessageを一時的に保管しておく場所
+// storeには、以下のような、array of objectが格納される。
+// [{received: 'foo', expected: 'lol'}]
 
-const testResultStore = []
+const store = []
 
-module.exports = { testResultStore }
+module.exports = { store }

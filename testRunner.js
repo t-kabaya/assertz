@@ -1,9 +1,42 @@
 const fs = require('fs')
 const { execSync } = require('child_process')
+const _ = require('lodash')
+const { store } = require('./store')
+const { createTestFailureMessage } = require('./createTestFailureMessage')
 
-const runTests = paths => {
+const runTests = async paths => {
   // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
-  paths.forEach(file => require(file))
+  await paths.forEach(file => require(file))
+
+  // 上の、requireを実行すると、storeに、{received: 'foo', expected: 'lol'}が、cacheされる。
+
+  // test success
+  const successTests = store.filter(obj =>
+    _.isEqual(obj.received, obj.expected)
+  )
+  successTests.forEach(() => console.log('passed'))
+
+  // testFailure
+  const failureTests = store.filter(
+    obj => !_.isEqual(obj.received, obj.expected)
+  )
+
+  failureTests
+    .map(obj =>
+      createTestFailureMessage(obj.received, obj.expected, 'mockFileName')
+    )
+    .forEach(message => console.log(message))
+
+  /* -------------------- show summury --------------------- */
+  const successTestCount = successTests.length
+  const failureTestCount = failureTests.length
+
+  const summury = `
+summury:
+passed count: ${successTestCount}
+failure count: ${failureTestCount}
+`
+  console.log(summury)
 }
 
 const findTests = dir => {
