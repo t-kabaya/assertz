@@ -24,3 +24,4 @@ Your String
 
 ## 今やること
 .ファイル名を、コールバックで取得する。
+・line numberを取得する（getLineNumber.jsを使って）
