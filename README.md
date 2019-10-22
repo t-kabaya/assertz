@@ -35,8 +35,8 @@ CAUTION: Test file must ends with *.test.js
 const assert = require('assertz')
 const sum = require('./sum')
 
-// adds 1 + 1 to equal 4
-assert(sum(1, 1), 4)
+// adds 1 + 1 to equal 2
+assert('adds 1 + 1 to equal 2', sum(1, 1), 2)
 ```
 
 Add the following section to your package.json:

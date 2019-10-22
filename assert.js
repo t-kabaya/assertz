@@ -6,9 +6,8 @@ const getLineNumber = require('./lib/getLineNumber')
 const fileName = 'test failed'
 
 // test resultを、storeにプッシュする
-const assert = (received, expected) => {
-  const lineNumber = getLineNumber()
-  store.push({ received, expected, lineNumber })
+const assert = (testName, received, expected) => {
+  store.push({ testName, received, expected })
 
   // const isPass = _.isEqual(received, expected)
 

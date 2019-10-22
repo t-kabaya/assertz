@@ -2,14 +2,10 @@
 
 const assert = require('../index')
 
-// number
-assert(1, 2)
+assert('number test', 1, 2)
 
-// string
-assert('foo', 'bar')
+assert('string test', 'foo', 'bar')
 
-// object
-assert({ foo: 'foo' }, { bar: 'bar' })
+assert('object test', { foo: 'foo' }, { bar: 'bar' })
 
-// boolean
-assert(true, false)
+assert('boolean test', true, false)

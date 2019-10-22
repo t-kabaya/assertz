@@ -11,19 +11,24 @@ const runTests = async paths => {
   // 上の、requireを実行すると、storeに、{received: 'foo', expected: 'lol'}が、cacheされる。
 
   // test success
-  const successTests = store.filter(obj =>
-    _.isEqual(obj.received, obj.expected)
+  const successTests = store.filter(input =>
+    _.isEqual(input.received, input.expected)
   )
   successTests.forEach(() => console.log('passed'))
 
   // testFailure
   const failureTests = store.filter(
-    obj => !_.isEqual(obj.received, obj.expected)
+    input => !_.isEqual(input.received, input.expected)
   )
 
   failureTests
-    .map(obj =>
-      createTestFailureMessage(obj.received, obj.expected, 'mockFileName')
+    .map(input =>
+      createTestFailureMessage(
+        input.testName,
+        input.received,
+        input.expected,
+        'mockFileName'
+      )
     )
     .forEach(message => console.log(message))
 
@@ -32,10 +37,10 @@ const runTests = async paths => {
   const failureTestCount = failureTests.length
 
   const summury = `
-summury:
-passed count: ${successTestCount}
-failure count: ${failureTestCount}
-`
+    summury:
+    passed count: ${successTestCount}
+    failure count: ${failureTestCount}
+  `
   console.log(summury)
 }
 
