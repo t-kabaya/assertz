@@ -3,45 +3,54 @@ const { execSync } = require('child_process')
 const _ = require('lodash')
 const { store } = require('./store')
 const { createTestFailureMessage } = require('./createTestFailureMessage')
+const { createSummary } = require('./lib/createSummary')
 
 const runTests = async paths => {
   // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
-  await paths.forEach(file => require(file))
+  const testStatus = await paths.reduce(
+    (testStatus, file) => {
+      require(file)
 
-  // 上の、requireを実行すると、storeに、{received: 'foo', expected: 'lol'}が、cacheされる。
+      // 上の、requireを実行すると、storeに、{received: 'foo', expected: 'lol'}が、cacheされる。
 
-  // test success
-  const successTests = store.filter(input =>
-    _.isEqual(input.received, input.expected)
+      // test success
+      store
+        .filter(input => _.isEqual(input.received, input.expected))
+        .forEach(() => {
+          console.log('passed')
+          testStatus.successCount += 1
+        })
+
+      // test failure
+      store
+        .filter(input => !_.isEqual(input.received, input.expected))
+        .map(input =>
+          createTestFailureMessage(
+            input.testName,
+            input.received,
+            input.expected,
+            'mockFileName'
+          )
+        )
+        .forEach(message => {
+          console.log(message)
+          testStatus.failureCount += 1
+        })
+
+      // storeの中身を、空にする。
+      store.length = 0
+
+      return testStatus
+    },
+    { successCount: 0, failureCount: 0 }
   )
-  successTests.forEach(() => console.log('passed'))
-
-  // testFailure
-  const failureTests = store.filter(
-    input => !_.isEqual(input.received, input.expected)
-  )
-
-  failureTests
-    .map(input =>
-      createTestFailureMessage(
-        input.testName,
-        input.received,
-        input.expected,
-        'mockFileName'
-      )
-    )
-    .forEach(message => console.log(message))
 
   /* -------------------- show summury --------------------- */
-  const successTestCount = successTests.length
-  const failureTestCount = failureTests.length
+  // const successTestCount = successTests.length
+  // const failureTestCount = failureTests.length
 
-  const summury = `
-    summury:
-    passed count: ${successTestCount}
-    failure count: ${failureTestCount}
-  `
-  console.log(summury)
+  const summary = createSummary(testStatus)
+  console.log(summary)
 }
 
 const findTests = dir => {

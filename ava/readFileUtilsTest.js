@@ -21,12 +21,12 @@ test('must get Line number 5', t => {
 
 /* -------------------- get test name and content --------------------- */
 
-test('must return test name and assert content', t => {
-  const output = getTestNameAndAssert('ava/fixture/readFileFixture.js')
-  const expected = {
-    testName: 'awesome test',
-    assert: "assert('awesome test', 'foo ',  'bar')"
-  }
+// test('must return test name and assert content', t => {
+//   const output = getTestNameAndAssert('ava/fixture/readFileFixture.js')
+//   const expected = {
+//     testName: 'awesome test',
+//     assert: "assert('awesome test', 'foo ',  'bar')"
+//   }
 
-  t.deepEqual(output, expected)
-})
+//   t.deepEqual(output, expected)
+// })

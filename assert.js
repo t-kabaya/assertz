@@ -1,7 +1,6 @@
 const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
 const { store } = require('./store')
-const getLineNumber = require('./lib/getLineNumber')
 
 const fileName = 'test failed'
 
