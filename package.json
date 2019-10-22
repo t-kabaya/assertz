@@ -9,7 +9,7 @@
     "publish": "npm publish",
     "testDebug": "node test/failure.test.js",
     "assertz": "assertz",
-    "ava": "ava"
+    "ava": "ava --watch"
   },
   "keywords": [
     "unit test",

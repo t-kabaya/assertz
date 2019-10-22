@@ -1,12 +1,14 @@
 const { createTestFailureMessage } = require('./createTestFailureMessage')
 const _ = require('lodash')
 const { store } = require('./store')
+const getLineNumber = require('./lib/getLineNumber')
 
 const fileName = 'test failed'
 
 // test resultを、storeにプッシュする
 const assert = (received, expected) => {
-  store.push({ received, expected })
+  const lineNumber = getLineNumber()
+  store.push({ received, expected, lineNumber })
 
   // const isPass = _.isEqual(received, expected)
 
