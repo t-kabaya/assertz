@@ -6,15 +6,13 @@ const { createTestFailureMessage } = require('./createTestFailureMessage')
 const { createSummary } = require('./lib/createSummary')
 
 const runTests = async paths => {
-  // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
   const testStatus = await paths.reduce(
     (testStatus, file) => {
+      // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
       require(file)
 
-      // 上の、requireを実行すると、storeに、{received: 'foo', expected: 'lol'}が、cacheされる。
-
       // test success
-      store
+      const successTests = store
         .filter(input => _.isEqual(input.received, input.expected))
         .forEach(() => {
           console.log('passed')
@@ -29,7 +27,7 @@ const runTests = async paths => {
             input.testName,
             input.received,
             input.expected,
-            'mockFileName'
+            file.replace(/.+\//, '')
           )
         )
         .forEach(message => {
@@ -37,7 +35,7 @@ const runTests = async paths => {
           testStatus.failureCount += 1
         })
 
-      // storeの中身を、空にする。
+      // reset store
       store.length = 0
 
       return testStatus
@@ -45,9 +43,7 @@ const runTests = async paths => {
     { successCount: 0, failureCount: 0 }
   )
 
-  /* -------------------- show summury --------------------- */
-  // const successTestCount = successTests.length
-  // const failureTestCount = failureTests.length
+  /* -------------------- show summary --------------------- */
 
   const summary = createSummary(testStatus)
   console.log(summary)

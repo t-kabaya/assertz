@@ -1,16 +1,18 @@
 const chalk = require('chalk')
 
 const createTestFailureMessage = (testName, received, expected, fileName) => {
+  // pathか
   const failureMessage =
-    chalk.gray(testName) +
+    '-----------------------------------------------------\n\n' +
+    chalk.white(testName) +
+    ' < ' +
+    chalk.blue(fileName) +
+    '\n\n' +
+    'received:\n' +
+    chalk.red(JSON.stringify(received)) +
     '\n' +
-    'Difference:' +
-    '\n' +
-    chalk.red('- ') +
-    JSON.stringify(received) +
-    '\n' +
-    chalk.green('+ ') +
-    JSON.stringify(expected) +
+    'expected:\n' +
+    chalk.green(JSON.stringify(expected)) +
     '\n'
 
   return failureMessage
