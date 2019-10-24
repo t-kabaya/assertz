@@ -1,7 +1,6 @@
-const cli = require('commander')
+const { findTests, runTests } = require('./testRunner')
+const showTestResult = require('./showTestResult')
+const { store } = require('./store')
 
-cli.option('-h, --help', 'help me')
-
-cli.parse(process.argv)
-
-console.log('added commander')
+const paths = findTests(__dirname.replace('/node_modules/assertz', ''))
+runTests(paths)
