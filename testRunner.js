@@ -14,10 +14,7 @@ const runTests = async paths => {
       // test success
       const successTests = store
         .filter(input => _.isEqual(input.received, input.expected))
-        .forEach(() => {
-          console.log('passed')
-          testStatus.successCount += 1
-        })
+        .forEach(() => (testStatus.successCount += 1))
 
       // test failure
       store
