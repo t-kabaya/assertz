@@ -1,8 +1,8 @@
 const { findTests, runTests } = require('./testRunner')
 const showTestResult = require('./showTestResult')
 const { store } = require('./store')
+const env = require('./env')
 
-const env = process.env.ENV
 const root =
   env === 'development'
     ? __dirname
