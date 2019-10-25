@@ -5,7 +5,7 @@
   "main": "index.js",
   "bin": "cli.js",
   "scripts": {
-    "test": "env ENV='development' node cli.js",
+    "test": "env NODE_ENV='development' node cli.js",
     "publish": "npm publish",
     "assertz": "assertz",
     "ava": "ava --watch"

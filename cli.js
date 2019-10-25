@@ -1,6 +1,5 @@
 const { findTests, runTests } = require('./testRunner')
 const showTestResult = require('./showTestResult')
-const { store } = require('./store')
 const env = require('./env')
 
 const root =
