@@ -11,4 +11,9 @@
 ## 今やること
 ・line numberを取得する（getLineNumber.jsを使って）
 ・libには何を入れるべきか？
+cliに、staging環境、本番環境を作る。
 
+## 
+
+v1.2.2
+のように管理している。

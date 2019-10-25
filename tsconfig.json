@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "": "outdirには、jへと変換されたファイルが格納される。",
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "indlude": [
+    "*/"
+  ]
+}

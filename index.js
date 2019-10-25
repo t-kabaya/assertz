@@ -1,3 +1,3 @@
-const { assert } = require('./assert')
+const { assert } = require('./lib/assert')
 
 module.exports = assert
