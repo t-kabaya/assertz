@@ -2,8 +2,8 @@
   "name": "assertz",
   "version": "3.4.0",
   "description": "super simple one liner unit test library",
-  "main": "index.js",
-  "bin": "cli.js",
+  "main": "dist/index.js",
+  "bin": "dist/cli.js",
   "scripts": {
     "test": "env NODE_ENV='development' node cli.js",
     "publish": "npm publish",
