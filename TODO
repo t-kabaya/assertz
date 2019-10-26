@@ -5,10 +5,12 @@
 ・Map, Setに対応する。
 ・テストが失敗してもエラーが帰らないため、huskyによるpre commitがうまく動作しない。
 ・magic assertを入れる。
-・ts-nodeを入れる。
 ターミナルをクリックすると、テストへ移動出来るように。
 
+・ファイルをセーブすると、typescirptが走るようにする（node menを使えば良い。）
+
 ## 今やること
+・jsファイルを全てtsへと書き換える。(安定性のため必要。)
 ・line numberを取得する（getLineNumber.jsを使って）
 ・libには何を入れるべきか？
 cliに、staging環境、本番環境を作る。

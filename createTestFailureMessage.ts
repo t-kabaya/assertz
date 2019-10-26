@@ -1,7 +1,6 @@
 const chalk = require('chalk')
 
-const createTestFailureMessage = (testName, received, expected, fileName) => {
-  // pathか
+export const createTestFailureMessage = (testName: string, received: any, expected: any, fileName: string): string => {
   const failureMessage =
     '-----------------------------------------------------\n\n' +
     chalk.white(testName) +
@@ -17,5 +16,3 @@ const createTestFailureMessage = (testName, received, expected, fileName) => {
 
   return failureMessage
 }
-
-module.exports = { createTestFailureMessage }

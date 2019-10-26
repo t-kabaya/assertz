@@ -1,18 +1,17 @@
-const fs = require('fs')
-const { execSync } = require('child_process')
-const _ = require('lodash')
-const { store } = require('./store')
-const { createTestFailureMessage } = require('./createTestFailureMessage')
-const { createSummary } = require('./lib/createSummary')
+import * as fs from 'fs'
+import * as _ from 'lodash'
+import { store } from './store'
+import { createTestFailureMessage } from './createTestFailureMessage'
+import { createSummary } from './lib/createSummary'
 
-const runTests = async paths => {
+export const runTests = async (paths: string[]) => {
   const testStatus = await paths.reduce(
     (testStatus, file) => {
       // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
       require(file)
 
       // test success
-      const successTests = store
+      store
         .filter(input => _.isEqual(input.received, input.expected))
         .forEach(() => (testStatus.successCount += 1))
 
@@ -46,35 +45,33 @@ const runTests = async paths => {
   console.log(summary)
 }
 
-const findTests = dir => {
-  const testPath = []
+export const findTests = (dir: string): string[] => {
+  const testPath: string[] = []
 
-  const walk = dir => {
+  const walk = (dir: string) => {
     const files = fs.readdirSync(dir)
 
     files
       // test.jsで終わるファイルを、テストファイルと見なす。
-      .filter(f => f.endsWith('.test.js'))
-      .map(file => '/' + dir + '/' + file)
-      .forEach(files => testPath.push(files))
+      .filter((f: string)  => f.endsWith('.test.js'))
+      .map((file: string) => '/' + dir + '/' + file)
+      .forEach((files: string) => testPath.push(files))
 
     files
       // .gitと、node_modulesは、エラーを引き起こすので、除外する。
-      .filter(f => f !== '.git')
-      .filter(f => f !== 'node_modules')
+      .filter((f: string) => f !== '.git')
+      .filter((f: string) => f !== 'node_modules')
       // フォルダのみ次へ
-      .filter(file => {
+      .filter((file: string) => {
         const stat = fs.statSync(dir + '/' + file)
         if (!stat) return false
 
         return stat.isDirectory()
       })
-      .forEach(childDir => walk(dir + '/' + childDir))
+      .forEach((childDir: string) => walk(dir + '/' + childDir))
   }
 
   walk(dir)
 
   return testPath
 }
-
-module.exports = { findTests, runTests }
