@@ -53,7 +53,7 @@ export const findTests = (dir: string): string[] => {
 
     files
       // test.jsで終わるファイルを、テストファイルと見なす。
-      .filter((f: string)  => f.endsWith('.test.js'))
+      .filter((f: string)  => f.endsWith('.test.js') || f.endsWith('.test.ts'))
       .map((file: string) => '/' + dir + '/' + file)
       .forEach((files: string) => testPath.push(files))
 

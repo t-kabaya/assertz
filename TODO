@@ -13,7 +13,7 @@
 ・jsファイルを全てtsへと書き換える。(安定性のため必要。)
 ・line numberを取得する（getLineNumber.jsを使って）
 ・libには何を入れるべきか？
-cliに、staging環境、本番環境を作る。
+e2eテストってどうしよう。
 
 ## 
 

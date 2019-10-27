@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "": "outdirには、jsへと変換されたファイルが格納される。",
     "outDir": "dist",
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "": "未使用変数の検知",
     "noUnusedLocals": true,
-    "": "未使用変数の検知",
     "noUnusedParameters": true
   },
   "indlude": [
