@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import { store } from './store'
 import { createTestFailureMessage } from './createTestFailureMessage'
 import { createSummary } from './lib/createSummary'
+import pipe from './utils/pipelineOperator'
 
 // interface testStatusType {
 //   fileName: string;
@@ -32,70 +33,38 @@ export const runTests = (paths: string[]) => {
   // ]
 
   
-  const testStatus: any = store.reduce((acc, val) => {
-    // ファイルネームをリターン。
+  const reducer = (acc: any, val: any) => {
     if (val.fileName) {
+      // ファイルネームを一時的にセット
       acc.fileName = val.fileName
       return acc
     }
 
     if (_.isEqual(val.received, val.expected)) {
       // テスト成功
-      acc.testStatus.successCount += 1
-    } else {
-      // テスト失敗
-      acc.testStatus.failureCount += 1
-      const failureMessage = createTestFailureMessage(
-        val.testName,
-        val.received,
-        val.expected,
-        acc.fileName.replace(/.+\//, '')
-        )
-      console.log(failureMessage)
+      acc.successCount += 1
+      return acc
     }
 
+    // テスト失敗
+    acc.failureCount += 1
+    const failureMessage = createTestFailureMessage(
+      val.testName,
+      val.received,
+      val.expected,
+      acc.fileName.replace(/.+\//, '')
+    )
+    console.log(failureMessage)
+    
     return acc
-  }, {fileName: '', testStatus: {successCount: 0, failureCount: 0}})
+  }
 
-
-  // const reducer = async(testStatus: testStatusType, file: string) => {
-  //   // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
-  //   await require(file)
-  //   console.log(store)
-    
-  //   // test success
-  //   await store
-  //   .filter(input => _.isEqual(input.received, input.expected))
-  //   .forEach(() => (testStatus.successCount += 1))
-    
-  //   // test failure
-  //   await store
-  //   .filter(input => !_.isEqual(input.received, input.expected))
-  //   .map(input =>
-  //     createTestFailureMessage(
-  //       input.testName,
-  //       input.received,
-  //       input.expected,
-  //       // root/usr/test.jsから、一番最後の単語を抜き出し、test.jsのように加工する。
-  //       file.replace(/.+\//, '')
-  //     )
-  //   )
-  //   .forEach(message => {
-  //     console.log(message)
-  //     testStatus.failureCount += 1
-  //   })
-    
-    // reset store
-    // await store.length = 0
-    
-  //   return testStatus
-  // }
-  
-  // const testStatus = await paths.reduce(reducer, { successCount: 0, failureCount: 0 })
+  const testResult = store.reduce(reducer, {fileName: '', successCount: 0, failureCount: 0})
 
   /* -------------------- show summary --------------------- */
-  const summary = createSummary(testStatus)
-  console.log(summary)
+  pipe(testResult, createSummary, console.log)
+  // const summary = createSummary(testResult)
+  // console.log(summary)
 }
 
 export const findTests = (dir: string): string[] => {
