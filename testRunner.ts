@@ -10,7 +10,7 @@ import pipe from './utils/pipelineOperator'
 //   testStatus: ;
 // }
 
-export const runTests = (paths: string[]) => {
+export const runTests = async(paths: string[]) => {
 
   // そもそも、テストが同時実行されない時点でよろしくない。
   // このコードを根本的に書き換える必要がある
@@ -19,20 +19,19 @@ export const runTests = (paths: string[]) => {
 
   // そのため、全てのfileをrequireする。その後出来た巨大なsingleton objectを元に、コンソールへの出力を考えると言う段取りにする。
 
-  // storeに全ての関数を入れてしまう。
-  paths.forEach(path => {
+  // storeに全てのtest objectを入れてしまう。
+  for await (const path of paths) {
     store.push({fileName: path})
-    // 念の為、一瞬処理を遅らせる。
-    process.nextTick(() => require(path))
-  })
-
+    require(path)
+    console.log('loop')
+  }
   // 以下のように、ちょっといびつなarray of jsonが帰ってくる。
   // [
   //   {fileName: './sandbox.js'},
-  //   {received: 777, expected: 666}
+  //   {testName: 'lol', received: 777, expected: 666},
+  //   {testName: 'lol', received: 'foo', expected: 'bar'}
   // ]
 
-  
   const reducer = (acc: any, val: any) => {
     if (val.fileName) {
       // ファイルネームを一時的にセット
@@ -63,8 +62,6 @@ export const runTests = (paths: string[]) => {
 
   /* -------------------- show summary --------------------- */
   pipe(testResult, createSummary, console.log)
-  // const summary = createSummary(testResult)
-  // console.log(summary)
 }
 
 export const findTests = (dir: string): string[] => {

@@ -1,25 +1,32 @@
-import { findTests, runTests } from './testRunner'
-import { NODE_ENV } from './env'
 // import { watcher } from './lib/watcher'
-import {throttle} from 'lodash'
-
-const root =
-  NODE_ENV === 'development'
-    ? __dirname
-    : __dirname.replace('/node_modules/assertz', '')
-
-
-// console.log(paths)
-// runTests(paths)
-
+import { throttle } from 'lodash'
+import * as commander from 'commander'
 import * as fs from 'fs'
-fs.watch(root, { recursive: true }, (event: any, filename) => {
-  console.log(event)
-  if (!!!filename) return
+import { findTests, runTests } from './testRunner'
+import { ROOT_FOLDER } from './env'
+import {store} from './store'
 
-  const paths: string[] = findTests(root)
-  const throttle_runTest = throttle(runTests, 30000)
+commander.version(require('./package.json').version)
+
+commander
+  .option('-d, --debug', 'output extra debugging')
+  .option('-w, --watch', 'watch mode')
+
+commander.parse(process.argv)
+
+const paths: string[] = findTests(ROOT_FOLDER)
+const throttle_runTest = throttle(runTests, 1000)
+
+if (commander.watch) {
   throttle_runTest(paths)
-})
+
+  fs.watch(ROOT_FOLDER, { recursive: true }, ({}, filename: string) => {
+    if (!filename) return
+    
+    throttle_runTest(paths)
+  })
+} else {
+  throttle_runTest(paths)
+}
 
 

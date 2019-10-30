@@ -6,8 +6,10 @@
   "bin": "dist/cli.js",
   "scripts": {
     "test": "env NODE_ENV='development' ts-node cli.ts",
+    "watch": "env NODE_ENV='development' ts-node cli.ts -w",
+    "version": "env NODE_ENV='development' ts-node -version",
     "publish": "npm publish",
-    "assertz": "assertz",
+    "assertz": "npx github:t-kabaya/assertz#develop",
     "ava": "ava --watch",
     "build": "npx tsc"
   },
@@ -29,15 +31,13 @@
   "devDependencies": {
     "@types/lodash": "^4.14.144",
     "@types/node": "^12.11.7",
-    "ava": "^2.4.0", 
+    "ava": "^2.4.0",
     "husky": "^3.0.9",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   },
   "husky": {
-    "hooks": {
-      "pre-push": "yarn test"
-    }
+    "hooks": {}
   },
   "ava": {
     "files": [
