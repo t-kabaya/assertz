@@ -453,6 +453,18 @@ arrify@^2.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
 
+"assertz@git+https://git@github.com/t-kabaya/assertz.git#develop":
+  version "3.4.0"
+  resolved "git+https://git@github.com/t-kabaya/assertz.git#9d4174f777bb0a47c7081277cbccb06bf1c48f49"
+  dependencies:
+    chalk "^2.4.2"
+    commander "^3.0.2"
+    globby "^10.0.1"
+    lodash "^4.17.15"
+    meow "^5.0.0"
+    stack-trace "^0.0.10"
+    update-notifier "^3.0.1"
+
 astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"

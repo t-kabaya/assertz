@@ -5,8 +5,6 @@ import * as fs from 'fs'
 import { findTests, runTests } from './testRunner'
 import { ROOT_FOLDER } from './env'
 
-commander.version(require('./package.json').version)
-
 commander
   .option('-d, --debug', 'output extra debugging')
   .option('-w, --watch', 'watch mode')
