@@ -4,7 +4,6 @@ import * as commander from 'commander'
 import * as fs from 'fs'
 import { findTests, runTests } from './testRunner'
 import { ROOT_FOLDER } from './env'
-import {store} from './store'
 
 commander.version(require('./package.json').version)
 

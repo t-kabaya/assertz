@@ -35,43 +35,80 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 exports.__esModule = true;
 var fs = require("fs");
 var _ = require("lodash");
 var store_1 = require("./store");
 var createTestFailureMessage_1 = require("./createTestFailureMessage");
 var createSummary_1 = require("./lib/createSummary");
-exports.runTests = function (paths) { return __awaiter(void 0, void 0, void 0, function () {
-    var testStatus, summary;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, paths.reduce(function (testStatus, file) {
-                    // assertzのassertは、即時関数なので、テストファイルを、requireするだけで実行される。
-                    require(file);
-                    // test success
-                    store_1.store
-                        .filter(function (input) { return _.isEqual(input.received, input.expected); })
-                        .forEach(function () { return (testStatus.successCount += 1); });
-                    // test failure
-                    store_1.store
-                        .filter(function (input) { return !_.isEqual(input.received, input.expected); })
-                        .map(function (input) {
-                        return createTestFailureMessage_1.createTestFailureMessage(input.testName, input.received, input.expected, file.replace(/.+\//, ''));
-                    })
-                        .forEach(function (message) {
-                        console.log(message);
-                        testStatus.failureCount += 1;
-                    });
-                    // reset store
-                    store_1.store.length = 0;
-                    return testStatus;
-                }, { successCount: 0, failureCount: 0 })
+var pipelineOperator_1 = require("./utils/pipelineOperator");
+// interface testStatusType {
+//   fileName: string;
+//   testStatus: ;
+// }
+exports.runTests = function (paths) { var paths_1, paths_1_1; return __awaiter(void 0, void 0, void 0, function () {
+    var path, e_1_1, reducer, testResult;
+    var e_1, _a;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 5, 6, 11]);
+                paths_1 = __asyncValues(paths);
+                _b.label = 1;
+            case 1: return [4 /*yield*/, paths_1.next()];
+            case 2:
+                if (!(paths_1_1 = _b.sent(), !paths_1_1.done)) return [3 /*break*/, 4];
+                path = paths_1_1.value;
+                store_1.store.push({ fileName: path });
+                require(path);
+                console.log('loop');
+                _b.label = 3;
+            case 3: return [3 /*break*/, 1];
+            case 4: return [3 /*break*/, 11];
+            case 5:
+                e_1_1 = _b.sent();
+                e_1 = { error: e_1_1 };
+                return [3 /*break*/, 11];
+            case 6:
+                _b.trys.push([6, , 9, 10]);
+                if (!(paths_1_1 && !paths_1_1.done && (_a = paths_1["return"]))) return [3 /*break*/, 8];
+                return [4 /*yield*/, _a.call(paths_1)];
+            case 7:
+                _b.sent();
+                _b.label = 8;
+            case 8: return [3 /*break*/, 10];
+            case 9:
+                if (e_1) throw e_1.error;
+                return [7 /*endfinally*/];
+            case 10: return [7 /*endfinally*/];
+            case 11:
+                reducer = function (acc, val) {
+                    if (val.fileName) {
+                        // ファイルネームを一時的にセット
+                        acc.fileName = val.fileName;
+                        return acc;
+                    }
+                    if (_.isEqual(val.received, val.expected)) {
+                        // テスト成功
+                        acc.successCount += 1;
+                        return acc;
+                    }
+                    // テスト失敗
+                    acc.failureCount += 1;
+                    var failureMessage = createTestFailureMessage_1.createTestFailureMessage(val.testName, val.received, val.expected, acc.fileName.replace(/.+\//, ''));
+                    console.log(failureMessage);
+                    return acc;
+                };
+                testResult = store_1.store.reduce(reducer, { fileName: '', successCount: 0, failureCount: 0 });
                 /* -------------------- show summary --------------------- */
-            ];
-            case 1:
-                testStatus = _a.sent();
-                summary = createSummary_1.createSummary(testStatus);
-                console.log(summary);
+                pipelineOperator_1["default"](testResult, createSummary_1.createSummary, console.log);
                 return [2 /*return*/];
         }
     });
@@ -82,7 +119,7 @@ exports.findTests = function (dir) {
         var files = fs.readdirSync(dir);
         files
             // test.jsで終わるファイルを、テストファイルと見なす。
-            .filter(function (f) { return f.endsWith('.test.js'); })
+            .filter(function (f) { return f.endsWith('.test.js') || f.endsWith('.test.ts'); })
             .map(function (file) { return '/' + dir + '/' + file; })
             .forEach(function (files) { return testPath.push(files); });
         files
