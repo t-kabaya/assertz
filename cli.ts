@@ -1,4 +1,5 @@
-// import { watcher } from './lib/watcher'
+#!/usr/bin/env node
+
 import { throttle } from 'lodash'
 import * as commander from 'commander'
 import * as fs from 'fs'
