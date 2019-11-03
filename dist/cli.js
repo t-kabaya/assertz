@@ -6,8 +6,6 @@ var commander = require("commander");
 var fs = require("fs");
 var testRunner_1 = require("./testRunner");
 var env_1 = require("./env");
-var pjson = require("./package.json");
-commander.version(pjson.version);
 commander
     .option('-d, --debug', 'output extra debugging')
     .option('-w, --watch', 'watch mode');
