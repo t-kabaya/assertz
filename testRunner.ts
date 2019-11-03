@@ -4,6 +4,7 @@ import { store } from './store'
 import { createTestFailureMessage } from './createTestFailureMessage'
 import { createSummary } from './lib/createSummary'
 import pipe from './utils/pipelineOperator'
+import log from './utils/logUtils'
 
 // interface testStatusType {
 //   fileName: string;
@@ -23,7 +24,6 @@ export const runTests = async(paths: string[]) => {
   for await (const path of paths) {
     store.push({fileName: path})
     require(path)
-    console.log('loop')
   }
   // 以下のように、ちょっといびつなarray of jsonが帰ってくる。
   // [
@@ -53,7 +53,7 @@ export const runTests = async(paths: string[]) => {
       val.expected,
       acc.fileName.replace(/.+\//, '')
     )
-    console.log(failureMessage)
+    log(failureMessage)
     
     return acc
   }
@@ -61,7 +61,7 @@ export const runTests = async(paths: string[]) => {
   const testResult = store.reduce(reducer, {fileName: '', successCount: 0, failureCount: 0})
 
   /* -------------------- show summary --------------------- */
-  pipe(testResult, createSummary, console.log)
+  pipe(testResult, createSummary, log)
 }
 
 export const findTests = (dir: string): string[] => {

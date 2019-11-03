@@ -11,13 +11,8 @@
 fs.watchは、linuxで動かない機能があるので、node-watchなど、サードパーティライブラリを使用する。
 
 ## 今やること
-・jsファイルを全てtsへと書き換える。(安定性のため必要。)
 ・line numberを取得する（getLineNumber.jsを使って）
-・libには何を入れるべきか？
 e2eテストってどうしよう。
+・npxで、githubの特定のブランチを実行する。
 
-
-watchモードは、完成した。
-しかし、watchモードを実行した瞬間にテストはまだ走らない。
-そのため、npm run watchと実行した瞬間に一回テストを走らせてからwatchモードに移るようにする。
-あと、commanderを加え、
+power-assertというライブラリを真似する。
