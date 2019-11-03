@@ -1,4 +1,5 @@
 "use strict";
+// pipe関数を自作した。
 exports.__esModule = true;
 var pipe = function (input) {
     var methods = [];

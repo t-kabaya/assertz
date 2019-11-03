@@ -1,6 +1,6 @@
+#!/usr/bin/env node
 "use strict";
 exports.__esModule = true;
-// import { watcher } from './lib/watcher'
 var lodash_1 = require("lodash");
 var commander = require("commander");
 var fs = require("fs");

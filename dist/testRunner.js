@@ -49,6 +49,7 @@ var store_1 = require("./store");
 var createTestFailureMessage_1 = require("./createTestFailureMessage");
 var createSummary_1 = require("./lib/createSummary");
 var pipelineOperator_1 = require("./utils/pipelineOperator");
+var logUtils_1 = require("./utils/logUtils");
 // interface testStatusType {
 //   fileName: string;
 //   testStatus: ;
@@ -68,7 +69,6 @@ exports.runTests = function (paths) { var paths_1, paths_1_1; return __awaiter(v
                 path = paths_1_1.value;
                 store_1.store.push({ fileName: path });
                 require(path);
-                console.log('loop');
                 _b.label = 3;
             case 3: return [3 /*break*/, 1];
             case 4: return [3 /*break*/, 11];
@@ -103,12 +103,12 @@ exports.runTests = function (paths) { var paths_1, paths_1_1; return __awaiter(v
                     // テスト失敗
                     acc.failureCount += 1;
                     var failureMessage = createTestFailureMessage_1.createTestFailureMessage(val.testName, val.received, val.expected, acc.fileName.replace(/.+\//, ''));
-                    console.log(failureMessage);
+                    logUtils_1["default"](failureMessage);
                     return acc;
                 };
                 testResult = store_1.store.reduce(reducer, { fileName: '', successCount: 0, failureCount: 0 });
                 /* -------------------- show summary --------------------- */
-                pipelineOperator_1["default"](testResult, createSummary_1.createSummary, console.log);
+                pipelineOperator_1["default"](testResult, createSummary_1.createSummary, logUtils_1["default"]);
                 return [2 /*return*/];
         }
     });

@@ -1,7 +1,7 @@
 import { store } from './store'
 
-const assert = (testName: string, received: any, expected: any): void => {
-  store.push({ testName, received, expected })
+const assert = (received: any, expected: any, testName: string): void => {
+  store.push({ received, expected, testName })
 }
 
 module.exports = assert
