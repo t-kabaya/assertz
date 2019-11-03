@@ -36,7 +36,7 @@ const assert = require('assertz')
 const sum = require('./sum')
 
 // adds 1 + 1 to equal 2
-assert('adds 1 + 1 to equal 2', sum(1, 1), 2)
+assert(sum(1, 1), 2, 'adds 1 + 1 to equal 2')
 ```
 
 Add the following section to your package.json:
@@ -44,7 +44,7 @@ Add the following section to your package.json:
 ```json
 {
   "scripts": {
-    "test": "node ./node_modules/assertz/cli.js"
+    "test": "assertz"
   }
 }
 ```
