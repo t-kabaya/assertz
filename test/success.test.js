@@ -1,4 +1,4 @@
-const assert = require('../index')
+const { assert } = require('../index')
 
 const obj1 = { foo: 'foo' }
 const obj2 = { foo: 'foo' }

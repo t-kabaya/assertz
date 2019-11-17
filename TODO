@@ -5,21 +5,18 @@
 ・ターミナルをクリックすると、テストへ移動出来るように。
 ・エラーが発生した時のメッセージを考える。
 ・fs.watchは、linuxで動かない機能があるので、node-watchなど、サードパーティライブラリで、書き換える。
-
-## 今やること
+・テストをもっと書く
+・before, afterも、作っておきたい。
+・async testでは、即時関数を使用している。この時のボイラープレートを無くしたいな。
+・notEqualというマッチャーを一つだけ増やす
 ・line numberを取得する（getLineNumber.jsを使って）
-e2eテストってどうしよう。
+・e2eテストってどうしよう。
 ・npxで、githubの特定のブランチを実行する。
 
-power-assertというライブラリを真似する。
+## 今やること
+feature/ snapShotTestで、.sandbox.jsのリファクタリング
 
-async testでは、即時関数を使用している。この時のボイラープレートを無くしたいな。
 
-apiのスナップショットと、reactのスナップショットにも対応したい。
-
-before, afterも、作っておきたい。
-
-テストをもっと書いておきたい。
 
 # snapShotテスト仕様
 
@@ -35,21 +32,14 @@ testNameがない時に、どう「変化した」ことを検知するんだろ
 もし、たまたま、同じjsonがあった場合は、テストの失敗を成功と捉えてしまう恐れがある。
 jestは、testNameで、snapShotを識別していたようだ。
 
-exports[`App increments the counter 2`] = `
-"Snapshot Diff:
-- First value
-+ Second value
-@@ -2,11 +2,11 @@
-    <h1>
-      My Counter
-    </h1>
-    <div>
-      <p>
--       0
-+       1
-      </p>
-    </div>
-    <button
-      onClick={[Function onClick]}
-      type=\\"button\\""
-`;
+snapShotの実装は、sandbox.jsと、snapshot.tsの二つのファイルに書いてある。
+
+
+snapShotTestと、unitTestの共存はどうしようかな。
+snapShotと、unitTest用のファイルを分けておいた方が実装はとても簡単だけど、それはユーザーにとってとても使いづらいし。
+
+sandboxから、importしてしまっている。
+これをtypeScriptに書き換えて、libに置かないといけない。
+
+スパゲッティコードを書いてしまった。
+sandbox.jsのリファクタリングから入る

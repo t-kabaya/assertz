@@ -5,6 +5,8 @@ import { createTestFailureMessage } from './createTestFailureMessage'
 import { createSummary } from './lib/createSummary'
 import pipe from './utils/pipelineOperator'
 import log from './utils/logUtils'
+const {findFailureTest} =  require('./sandbox.js')
+// console.log(findTestResult)
 
 // interface testStatusType {
 //   fileName: string;
@@ -33,8 +35,18 @@ export const runTests = async(paths: string[]) => {
     if (val.fileName) {
       // ファイルネームを一時的にセット
       acc.fileName = val.fileName
+
       return acc
     }
+
+    // snap shot test
+    if (val.type === 'snap') {
+      acc.snapShotStore.push({snap: val.snap, testName: val.testName, path: acc.fileName})
+
+      return acc
+    }
+
+    // snap
 
     if (_.isEqual(val.received, val.expected)) {
       // テスト成功
@@ -57,11 +69,16 @@ export const runTests = async(paths: string[]) => {
     return acc
   }
 
-  const testResult = store.reduce(reducer, {fileName: '', successCount: 0, failureCount: 0})
+  const testResult = store.reduce(reducer, {fileName: '', successCount: 0, failureCount: 0, snapShotStore: []})
 
   /* -------------------- show summary --------------------- */
   pipe(testResult, createSummary, log)
+
+  const { snapShotStore } = testResult
+  findFailureTest(snapShotStore)
+
 }
+
 
 export const findTests = (dir: string): string[] => {
   const testPath: string[] = []
