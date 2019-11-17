@@ -1,3 +1,6 @@
+# Don't use assertz.
+# Developing
+
 <img src="https://user-images.githubusercontent.com/26253721/66712469-fa9f3480-edd7-11e9-9b6d-f3e9b2c4264b.png" alt="alt text" width="400" height="400">
 
 assertz is super simple test library.

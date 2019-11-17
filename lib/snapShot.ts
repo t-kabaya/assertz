@@ -20,21 +20,25 @@ const updateSnapShot = (tests, path, testName) => {
   fs.writeFileSync(path, JSON.stringify(snap))
 }
 
-// updatesするかどうかを判断 readSnapShotという命名は、よろしくない。
-const maybeUpdateSnapShot = (tests, path) => {
+// snapShotを更新する必要があるかを判断
+const findFailureTest = (tests, path) => {
   // utf8を指定しないと、bufferが帰ってくる。
   const snap = JSON.parse(fs.readFileSync(path, 'utf8'))
   console.log(snap)
   console.log(Object.keys(snap))
 
-  const diff = tests.filter(test => !Object.keys(snap).includes(test.testName))
-  if (diff.length === 0) {
-    console.log('snap shot は成功です。')
+  const failureTestName = tests
+    .map(testObj => testObj.testName)
+    .filter(testName => !Object.keys(snap).includes(testName))
+  if (failureTestName.length === 0) {
+    console.log('snap shot に変化はありません')
   } else {
     console.log('updateしてください。')
   }
-  console.log(diff)
+
+  return failureTestName
 }
 
 // updateSnapShot(tests, path)
-maybeUpdateSnapShot(tests, path)
+const failureTestName = findFailureTest(tests, path)
+console.log(failureTestName)
