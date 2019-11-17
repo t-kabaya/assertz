@@ -14,10 +14,7 @@ import log from './utils/logUtils'
 export const runTests = async(paths: string[]) => {
 
   // そもそも、テストが同時実行されない時点でよろしくない。
-  // このコードを根本的に書き換える必要がある
   // 具体的には、現状は、一つのファイルをrequireして、その出力を行い、もう一つのファイルをrequireして、その出力を行いと言うように都度requireしてる。
-  // これは、バグの元になる。（非同期コードで、シングルトンオブジェクトをなんども書き換えるため。）
-
   // そのため、全てのfileをrequireする。その後出来た巨大なsingleton objectを元に、コンソールへの出力を考えると言う段取りにする。
 
   // storeに全てのtest objectを入れてしまう。
@@ -47,13 +44,15 @@ export const runTests = async(paths: string[]) => {
 
     // テスト失敗
     acc.failureCount += 1
-    const failureMessage = createTestFailureMessage(
-      val.testName,
-      val.received,
-      val.expected,
-      acc.fileName.replace(/.+\//, '')
+    pipe(
+      createTestFailureMessage(
+        val.testName,
+        val.received,
+        val.expected,
+        acc.fileName.replace(/.+\//, '')
+      ),
+      log
     )
-    log(failureMessage)
     
     return acc
   }

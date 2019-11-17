@@ -9,8 +9,7 @@ import { ROOT_FOLDER } from './env'
 commander
   .option('-d, --debug', 'output extra debugging')
   .option('-w, --watch', 'watch mode')
-
-commander.parse(process.argv)
+  .parse(process.argv)
 
 const paths: string[] = findTests(ROOT_FOLDER)
 const throttle_runTest = throttle(runTests, 1000)
