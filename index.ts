@@ -5,3 +5,4 @@ const assert = (received: any, expected: any, testName: string): void => {
 }
 
 module.exports = assert
+exports.assert = assert
