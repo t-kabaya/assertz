@@ -5,13 +5,7 @@ import { createTestFailureMessage } from './createTestFailureMessage'
 import { createSummary } from './lib/createSummary'
 import pipe from './utils/pipelineOperator'
 import log from './utils/logUtils'
-const {findFailureTest} =  require('./sandbox.js')
-// console.log(findTestResult)
-
-// interface testStatusType {
-//   fileName: string;
-//   testStatus: ;
-// }
+import { findFailureTest } from './lib/snapshot'
 
 export const runTests = async(paths: string[]) => {
 

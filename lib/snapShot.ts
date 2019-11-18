@@ -23,7 +23,7 @@ const mockTests: testObjectType[] = [
 ]
 
 // snapShotのアップデート(完成)
-const updateSnapShot = (tests: testObjectType[]) => {
+export const updateSnapShot = (tests: testObjectType[]) => {
   const snap: any = {}
   console.log(tests)
   tests.forEach(test => {
@@ -36,7 +36,7 @@ const updateSnapShot = (tests: testObjectType[]) => {
 }
 
 // snapShotを更新する必要があるかを判断
-const findFailureTest = (tests: testObjectType[]): any[] => {
+export const findFailureTest = (tests: testObjectType[]): any[] => {
   // utf8を指定しないと、bufferが帰ってくる。
   const readSnap = (test: testObjectType) => JSON.parse(fs.readFileSync(test.path + '.snap', 'utf8'))
 
