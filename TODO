@@ -14,8 +14,7 @@
 ・npxで、githubの特定のブランチを実行する。
 
 ## 今やること
-feature/ snapShotTestで、.sandbox.jsのリファクタリング
-
+snapShot.tsの単体テストを書く
 
 
 # snapShotテスト仕様
@@ -32,14 +31,4 @@ testNameがない時に、どう「変化した」ことを検知するんだろ
 もし、たまたま、同じjsonがあった場合は、テストの失敗を成功と捉えてしまう恐れがある。
 jestは、testNameで、snapShotを識別していたようだ。
 
-snapShotの実装は、sandbox.jsと、snapshot.tsの二つのファイルに書いてある。
-
-
-snapShotTestと、unitTestの共存はどうしようかな。
-snapShotと、unitTest用のファイルを分けておいた方が実装はとても簡単だけど、それはユーザーにとってとても使いづらいし。
-
-sandboxから、importしてしまっている。
-これをtypeScriptに書き換えて、libに置かないといけない。
-
-スパゲッティコードを書いてしまった。
-sandbox.jsのリファクタリングから入る
+avaで、snapshot.tsの単体テストを書いておく。
