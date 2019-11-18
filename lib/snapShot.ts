@@ -1,52 +1,68 @@
-// const fs = require('fs')
+const fs = require('fs')
 
-// const snapStore = []
+// interfaceの代わりにtypeを使っておく。
+// 厳密には、typeより、interfaceを使った方が良いらしい。
 
-// const snap = (snap, testName) => {
-//   snapStore.push({snap, testName, type: 'snap'})
-// }
+type testObjectType = {
+  testName: string;
+  snap: any;
+  path: string;
+}
 
-// const tests = [
-//   {
-//     testName: 'some snap',
-//     snapData: { foo: 'foo' },
-//     path: './'
-//   },
-//   {
-//     testName: 'nice snap',
-//     snapData: 777,
-//     path: './'
-//   }
-// ]
+const mockTests: testObjectType[] = [
+  {
+    testName: 'some snap',
+    snap: { foo: 'foo' },
+    path: './message.txt'
+  },
+  {
+    testName: 'nice snap',
+    snap: 777,
+    path: './message.txt'
+  }
+]
 
-// const path = './message.txt'
+// snapShotのアップデート(完成)
+const updateSnapShot = (tests: testObjectType[]) => {
+  const snap: any = {}
+  console.log(tests)
+  tests.forEach(test => {
+    snap[test.testName] = JSON.stringify(test.snap)
+    console.log(snap)
 
-// // snapShotのアップデート(完成)
-// const updateSnapShot = (tests, path, testName) => {
-//   const snap = {}
-//   tests.forEach(test => (snap[test.testName] = JSON.stringify(test.snapData)))
-//   fs.writeFileSync(path, JSON.stringify(snap))
-// }
+    // test.js.snapという末尾になっている。.jsぐらいは取り除いた方が良いかな？
+    fs.writeFileSync(test.path + '.snap', JSON.stringify(snap))
+  })
+}
 
-// // snapShotを更新する必要があるかを判断
-// const findFailureTest = (tests, path) => {
-//   // utf8を指定しないと、bufferが帰ってくる。
-//   const snap = JSON.parse(fs.readFileSync(path, 'utf8'))
-//   console.log(snap)
-//   console.log(Object.keys(snap))
+// snapShotを更新する必要があるかを判断
+const findFailureTest = (tests: testObjectType[]): any[] => {
+  // utf8を指定しないと、bufferが帰ってくる。
+  const readSnap = (test: testObjectType) => JSON.parse(fs.readFileSync(test.path + '.snap', 'utf8'))
 
-//   const failureTestName = tests
-//     .map(testObj => testObj.testName)
-//     .filter(testName => !Object.keys(snap).includes(testName))
-//   if (failureTestName.length === 0) {
-//     console.log('snap shot に変化はありません')
-//   } else {
-//     console.log('updateしてください。')
-//   }
+  try {
+    const failureTestName = tests
+    // .map(testObj => testObj.testName)
+    .filter(
+      testObj => !Object.keys(readSnap(testObj)).includes(testObj.testName)
+    )
+    if (failureTestName.length === 0) {
+      console.log('you do not need to update snapshot')
+    } else {
+      console.log('you need to update snapshot')
+    }
+  } catch (e) {
+    console.log()
+    updateSnapShot(tests)
+    console.log('created 1 snapShot')
+    return []
+  }
 
-//   return failureTestName
-// }
+  return failureTestName
+}
 
-// // updateSnapShot(tests, path)
-// const failureTestName = findFailureTest(tests, path)
-// console.log(failureTestName)
+// updateSnapShot(tests, path)
+const failureTestName = findFailureTest(mockTests)
+console.log(failureTestName)
+
+exports.findFailureTest = findFailureTest
