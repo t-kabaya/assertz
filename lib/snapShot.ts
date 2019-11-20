@@ -1,4 +1,5 @@
 const fs = require('fs')
+const _ = require('lodash')
 
 // interfaceの代わりにtypeを使っておく。
 // 厳密には、typeより、interfaceを使った方が良いらしい。
@@ -38,27 +39,37 @@ export const updateSnapShot = (tests: testObjectType[]) => {
 // snapShotを更新する必要があるかを判断
 export const findFailureTest = (tests: testObjectType[]): any[] => {
   // utf8を指定しないと、bufferが帰ってくる。
-  const readSnap = (test: testObjectType) => JSON.parse(fs.readFileSync(test.path + '.snap', 'utf8'))
-
-  try {
     const failureTestName = tests
     // .map(testObj => testObj.testName)
     .filter(
-      testObj => !Object.keys(readSnap(testObj)).includes(testObj.testName)
+      testObj => !Object.keys(readSnapShot(testObj.path)).includes(testObj.testName)
     )
     if (failureTestName.length === 0) {
       console.log('you do not need to update snapshot')
     } else {
       console.log('you need to update snapshot')
     }
-  } catch (e) {
-    console.log()
-    updateSnapShot(tests)
-    console.log('created 1 snapShot')
-    return []
-  }
 
   return failureTestName
+}
+
+export const readSnapShot = (path: string) => {
+  try {
+    return JSON.parse(fs.readFileSync(path + '.snap', 'utf8'))
+  } catch (e) {
+    return {}
+  }
+}
+
+
+// path毎に分ける。
+export const groupByPath = (testObject: testObjectType[]) => {
+  const paths = _.sortedUniq(testObject.map(testObj => testObj.path))
+  // return paths
+
+  return paths.map((path: any) => testObject.filter((testObj: any) => testObj.path === path))
+  // _.groupBy(testObject, )
+  // return true
 }
 
 // updateSnapShot(tests, path)
