@@ -15,7 +15,9 @@
 
 ## 今やること
 snapShot.tsの単体テストを書く
-
+maybeUpdateSnapShotの単体テストをsinonを使って書く
+snapShotテストで生成されたファイルが読みづらいな。
+末尾が、.js.snapとなっているのがよろしくない。末尾の、.js, .tsを取り除く。
 
 # snapShotテスト仕様
 

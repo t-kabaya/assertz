@@ -1,3 +1,3 @@
 const { snap } = require('../index')
 
-snap(777, 'number snap')
+snap(666, 'number snap')

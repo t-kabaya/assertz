@@ -1,5 +1,5 @@
 const test: any = require('ava')
-const { updateSnapShot, findFailureTest, readSnapShot, groupByPath } = require('../lib/snapShot')
+const { updateSnapShot, findFailureTest, readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest } = require('../lib/snapShot')
 const fs = require('fs')
 const sinon = require('sinon')
 
@@ -77,4 +77,53 @@ test('groupByPath: must return nested array', (t: any) => {
 
   const output = groupByPath(input)
   t.deepEqual(output, expected)
+})
+
+/*---------------------------------- maybeUpdateSnapShot ------------------------------------*/
+
+// 古いsnapShotと、新しいsnapShotが異なる場合、trueを返さなくてはならない。
+test('shouldUpdateSnapShot: if old snapShot and new snapShot is different, then return true', (t: any) => {
+  const oldSnapShot = 
+    [
+      {
+        testName: 'some snap',
+        snap: { foo: 'foo' },
+        path: './foo.snap'
+      },
+      {
+        testName: 'nice snap',
+        snap: 777,
+        path: './foo.snap'
+      },
+    ]
+
+  const newSnapShot = [
+    {
+      testName: 'some snap',
+      snap: { bar: 'foo' },
+      path: './bar.snap'
+    },
+    {
+      testName: 'nice snap',
+      snap: 777,
+      path: './bar.snap'
+    },
+  ]
+
+  // sinon.stub(updateSnapShot, 'readFileSync').returns(new Error())
+
+  const output = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))
+  t.deepEqual(output, true)
+  // sinon.restore()
+})
+
+/*----------------------------------- runSnapShotTest ------------------------------------------*/
+
+
+test('runSnapShotTest: ', (t: any) => {
+  sinon.stub(fs, 'readFileSync').returns('{"foo": 777}')
+  
+  const output = readSnapShot('./README.md')
+  t.deepEqual(output, {foo: 777})
+  sinon.restore()
 })

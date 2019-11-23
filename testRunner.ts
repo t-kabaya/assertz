@@ -5,7 +5,7 @@ import { createTestFailureMessage } from './createTestFailureMessage'
 import { createSummary } from './lib/createSummary'
 import pipe from './utils/pipelineOperator'
 import log from './utils/logUtils'
-import { findFailureTest } from './lib/snapshot'
+import { runSnapShotTest } from './lib/snapshot'
 
 export const runTests = async(paths: string[]) => {
 
@@ -69,7 +69,8 @@ export const runTests = async(paths: string[]) => {
   pipe(testResult, createSummary, log)
 
   const { snapShotStore } = testResult
-  findFailureTest(snapShotStore)
+  runSnapShotTest(snapShotStore)
+  // findFailureTest(snapShotStore)
 
 }
 
