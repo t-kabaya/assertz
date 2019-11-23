@@ -65,6 +65,7 @@ export const readSnapShot = (path: string) => {
   }
 }
 
+
 const writeSnapShot = (newSnapShot: snapType[]): void => {
   newSnapShot.forEach(newSS => {
     try {

@@ -17,7 +17,10 @@
 snapShot.tsの単体テストを書く
 maybeUpdateSnapShotの単体テストをsinonを使って書く
 snapShotテストで生成されたファイルが読みづらいな。
-末尾が、.js.snapとなっているのがよろしくない。末尾の、.js, .tsを取り除く。
+createReporterを完成させて、アップデートが必要なスナップショットをかく。
+snapShotの中で、updateが必要なものを列挙する。
+
+と言うより仕様を先に決めておく必要がある。
 
 # snapShotテスト仕様
 
@@ -33,4 +36,10 @@ testNameがない時に、どう「変化した」ことを検知するんだろ
 もし、たまたま、同じjsonがあった場合は、テストの失敗を成功と捉えてしまう恐れがある。
 jestは、testNameで、snapShotを識別していたようだ。
 
-avaで、snapshot.tsの単体テストを書いておく。
+testを走らせる。
+(新しいスナップショットは、テストを走らせた段階で書き込む。)
+下
+スナップショットが間違っていることがみつかる。
+
+assertz updateSnapShotを走らせると、
+snapShotがアップデートされる。

@@ -1,7 +1,8 @@
-const test: any = require('ava')
-const { updateSnapShot, findFailureTest, readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport } = require('../lib/snapShot')
 const fs = require('fs')
 const sinon = require('sinon')
+const test: any = require('ava')
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport } = require('../lib/snapShot')
+import * as snapShot from '../lib/snapShot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
 
@@ -202,19 +203,14 @@ test('createSnapShotReport: must match two object', (t: any) => {
   t.deepEqual(actual, expected)
 })
 
-test('createSnapShotReport: if oldSnapShot is blank array, then return blank array', (t: any) => {
-  const oldSnapShot: any = []
-  const newSnapShot = [
-    {
-      testName: 'baz',
-      snap: {
-        bar: "bar"
-      },
-      path: './'
-    }
-  ]
+// TODO: delete this test. this is example of stub standalone function
+test('sinon stubing example', (t: any) => {
+  console.log(runSnapShotTest)
 
-  const actual = createSnapShotReport(oldSnapShot, newSnapShot)
+  sinon.stub(snapShot, 'readSnapShot').returns('read snapShot')
+
+
+  const actual = snapShot.readSnapShot('oo')
 
   t.deepEqual(actual, [])
 })

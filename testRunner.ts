@@ -69,7 +69,8 @@ export const runTests = async(paths: string[]) => {
   pipe(testResult, createSummary, log)
 
   const { snapShotStore } = testResult
-  runSnapShotTest(snapShotStore)
+  const snapShotResult = runSnapShotTest(snapShotStore)
+  console.log(snapShotResult)
   // findFailureTest(snapShotStore)
 
 }
