@@ -12,7 +12,8 @@
     "version": "env NODE_ENV='development' ts-node -version",
     "publish": "npm publish",
     "ava": "ava --watch",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "onchane": "onchange '**/*.ts' -- yarn run test"
   },
   "keywords": [
     "unit test",
@@ -36,6 +37,7 @@
     "assertz": "git+https://git@github.com/t-kabaya/assertz.git#develop",
     "ava": "^2.4.0",
     "husky": "^3.0.9",
+    "onchange": "^6.1.0",
     "sinon": "^7.5.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.4"

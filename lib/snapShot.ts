@@ -10,21 +10,6 @@ type snapType = {
   path: string;
 }
 
-// const snapShotStore = []
-
-// const mockTests: testObjectType[] = [
-//   {
-//     testName: 'some snap',
-//     snap: { foo: 'foo' },
-//     path: './message.txt'
-//   },
-//   {
-//     testName: 'nice snap',
-//     snap: 777,
-//     path: './message.txt'
-//   }
-// ]
-
 export const updateSnapShot = (path: string, snapShot: any) => {
   const stringifiedSnapShot = JSON.stringify(snapShot)
   fs.writeFileSync(path + ".snap", stringifiedSnapShot)
@@ -42,61 +27,58 @@ export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapT
 `
     })).flat().filter(Boolean)
   // filter(Boolean)で、undefinedを取り除く。
-  // return reportStrings.flat().filter(Boolean)
 )
+
 
 // snapShotのアップデート(完成)
 export const runSnapShotTest = (snapShotTests: snapType[]) => {
   const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
+  console.log({groupedSnapShots: JSON.stringify(groupedSnapShots)})
   // console.log({groupedSnapShots});
   
   
   const snapShotReport: any = groupedSnapShots.map((newSnapShot: snapType[]) => {
     const path: string = newSnapShot[0].path
     const oldSnapShot: snapType[] = readSnapShot(path)
-    // const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))
-
-    console.log({oldSnapShot});
-    console.log({newSnapShot});
-    
-    // console.log({isUpdate})
-    
-    // if (isUpdate) {
+    // undefinedが帰ってきたら、古いsnapshotが存在しないと言うことなので、新規にsnapshotを作成する。
+    console.log({oldSnapShot})
+    if (oldSnapShot.length === 0) {
+      console.log({newSnapShot: JSON.stringify(newSnapShot)})
+      writeSnapShot(newSnapShot)
+    } else {
+      console.log('something wrong')
       return createSnapShotReport(oldSnapShot, newSnapShot)
-      // updateSnapShot(path, snapShot)
-    // }
-    // return ['']
-  })
-  // tmp
-  console.log(snapShotReport)
-  console.log('finish snapShot test')
+    }
+    // const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))    
+  }).flat().filter(Boolean).join('\n')
+  console.log({snapShotReport})
+
+  // snapShotReport.forEach((message: any) => console.log(message))
+  return snapShotReport
 }
-
-// TODO: findFailureTestを削除する。
-// export const findFailureTest = (tests: testObjectType[]): any[] => {
-//   // utf8を指定しないと、bufferが帰ってくる。
-//     const failureTestName = tests
-//     // .map(testObj => testObj.testName)
-//     .filter(
-//       testObj => !Object.keys(readSnapShot(testObj.path)).includes(testObj.testName)
-//     )
-//     if (failureTestName.length === 0) {
-//       console.log('you do not need to update snapshot')
-//     } else {
-//       console.log('you need to update snapshot')
-//     }
-
-//   return failureTestName
-// }
 
 export const readSnapShot = (path: string) => {
   try {
-    return JSON.parse(fs.readFileSync(path + '.snap', 'utf8'))
+    return JSON.parse(fs.readFileSync(createSnapShotPath(path), 'utf8'))
   } catch (e) {
-    return {}
+    return []
   }
 }
 
+const writeSnapShot = (newSnapShot: snapType[]): void => {
+  newSnapShot.forEach(newSS => {
+    try {
+      console.log('created snapshot')
+      fs.writeFileSync(createSnapShotPath(newSS.path), JSON.stringify(newSnapShot))
+    } catch (e) {
+      // noop
+    }
+  })
+}
+
+const createSnapShotPath = (path: string) => {
+  return path.replace('.js', '.snap').replace('.ts', '.snap')
+}
 
 // path毎に分ける
 export const groupByPath = (testObject: snapType[]): snapType[][] => {

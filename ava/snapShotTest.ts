@@ -3,12 +3,14 @@ const { updateSnapShot, findFailureTest, readSnapShot, groupByPath, shouldUpdate
 const fs = require('fs')
 const sinon = require('sinon')
 
-// もしファイルが存在しなければ、空のオブジェクトを返す事。
-test('readSnap: if file does not exist, then return blank object', (t: any) => {
+/*----------------------------------------- readSnapShot --------------------------------------------*/
+
+// もしファイルが存在しなければ、空の配列を返す事。
+test('readSnap: if file does not exist, then return blank array', (t: any) => {
   sinon.stub(fs, 'readFileSync').returns(new Error())
 
   const output = readSnapShot('./README.md')
-  t.deepEqual(output, {})
+  t.deepEqual(output, [])
   sinon.restore()
 })
 
@@ -129,7 +131,7 @@ test('runSnapShotTest: ', (t: any) => {
 })
 
 
-/*---------------------------------------- createSnapShotReport --------------------------------------------------------*/
+/*------------------------------------- createSnapShotReport --------------------------------------------*/
 
 test('createSnapShotReport: must match object', (t: any) => {
   const oldSnapShot = [{
@@ -198,4 +200,21 @@ test('createSnapShotReport: must match two object', (t: any) => {
   const actual = createSnapShotReport(oldSnapShot, newSnapShot)
 
   t.deepEqual(actual, expected)
+})
+
+test('createSnapShotReport: if oldSnapShot is blank array, then return blank array', (t: any) => {
+  const oldSnapShot: any = []
+  const newSnapShot = [
+    {
+      testName: 'baz',
+      snap: {
+        bar: "bar"
+      },
+      path: './'
+    }
+  ]
+
+  const actual = createSnapShotReport(oldSnapShot, newSnapShot)
+
+  t.deepEqual(actual, [])
 })
