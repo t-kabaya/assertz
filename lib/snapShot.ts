@@ -4,13 +4,13 @@ const _ = require('lodash')
 // interfaceの代わりにtypeを使っておく。
 // 厳密には、typeより、interfaceを使った方が良いらしい。
 
-type testObjectType = {
+type snapType = {
   testName: string;
   snap: any;
   path: string;
 }
 
-const snapShotStore = []
+// const snapShotStore = []
 
 // const mockTests: testObjectType[] = [
 //   {
@@ -31,37 +31,44 @@ export const updateSnapShot = (path: string, snapShot: any) => {
   console.log('update snapShot')
 }
 
-export const createSnapShotReport = (oldSnapShot: testObjectType[], newSnapShot: testObjectType[]) => {
-  // const report = ''
-  const reportStrings: string[][] = newSnapShot.map((new: any) => 
-    oldSnapShot.filter(old => old.testName === new.testName ).map(obj => obj.testName)
-    // return diff
-  )
-  // TODO: 関数型の書き方では、ここでconsole.logするべきではない。
-  console.log(reportStrings)
-}
+export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapType[]): (string | undefined)[] => (
+  newSnapShot.map(newSS => oldSnapShot
+    .map(oldSS => {
+      if (oldSS.testName === newSS.testName) return `Snapshot > ${newSS.testName}
+- SnapShot
++ Received
+- ${oldSS.snap}
++ ${newSS.snap}
+`
+    })).flat().filter(Boolean)
+  // filter(Boolean)で、undefinedを取り除く。
+  // return reportStrings.flat().filter(Boolean)
+)
 
 // snapShotのアップデート(完成)
-export const runSnapShotTest = (snapShotTests: testObjectType[]) => {
-  const groupedSnapShots = groupByPath(snapShotTests)
+export const runSnapShotTest = (snapShotTests: snapType[]) => {
+  const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
   // console.log({groupedSnapShots});
   
   
-  groupedSnapShots.forEach((snapShot: any) => {
-    const path: string = snapShotTests[0].path
-    const oldSnapShot: testObjectType[] = readSnapShot(path)
-    const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(snapShot))
+  const snapShotReport: any = groupedSnapShots.map((newSnapShot: snapType[]) => {
+    const path: string = newSnapShot[0].path
+    const oldSnapShot: snapType[] = readSnapShot(path)
+    // const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))
 
     console.log({oldSnapShot});
-    console.log({snapShot});
+    console.log({newSnapShot});
     
-    console.log({isUpdate})
+    // console.log({isUpdate})
     
-    if (isUpdate) {
-      createSnapShotReport(oldSnapShot, snapShot)
-      updateSnapShot(path, snapShot)
-    }
+    // if (isUpdate) {
+      return createSnapShotReport(oldSnapShot, newSnapShot)
+      // updateSnapShot(path, snapShot)
+    // }
+    // return ['']
   })
+  // tmp
+  console.log(snapShotReport)
   console.log('finish snapShot test')
 }
 
@@ -92,7 +99,7 @@ export const readSnapShot = (path: string) => {
 
 
 // path毎に分ける
-export const groupByPath = (testObject: testObjectType[]) => {
+export const groupByPath = (testObject: snapType[]): snapType[][] => {
   // must sort
   const paths = _.sortedUniq(testObject.map(testObj => testObj.path))
 

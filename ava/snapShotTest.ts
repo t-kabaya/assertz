@@ -1,5 +1,5 @@
 const test: any = require('ava')
-const { updateSnapShot, findFailureTest, readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest } = require('../lib/snapShot')
+const { updateSnapShot, findFailureTest, readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport } = require('../lib/snapShot')
 const fs = require('fs')
 const sinon = require('sinon')
 
@@ -126,4 +126,76 @@ test('runSnapShotTest: ', (t: any) => {
   const output = readSnapShot('./README.md')
   t.deepEqual(output, {foo: 777})
   sinon.restore()
+})
+
+
+/*---------------------------------------- createSnapShotReport --------------------------------------------------------*/
+
+test('createSnapShotReport: must match object', (t: any) => {
+  const oldSnapShot = [{
+    testName: 'baz',
+    snap: {
+      foo: "foo"
+    },
+    path: './'
+  }]
+  const newSnapShot = [{
+    testName: 'baz',
+    snap: {
+      bar: "bar"
+    },
+    path: './'
+  }]
+  const testName = 'baz'
+
+  const expected = [`Snapshot > ${testName}
+- SnapShot
++ Received
+- ${{foo: 'foo'}}
++ ${{bar: 'bar'}}
+`]
+
+  const actual = createSnapShotReport(oldSnapShot, newSnapShot)
+  // console.log({expected})
+  // console.log({actual})
+
+  t.deepEqual(actual, expected)
+})
+
+test('createSnapShotReport: must match two object', (t: any) => {
+  const oldSnapShot = [
+    {
+      testName: 'baz',
+      snap: {
+        foo: "foo"
+      },
+      path: './'
+    },
+    {
+      testName: 'notMatch',
+      snap: 666,
+      path: './'
+    }
+  ]
+  const newSnapShot = [
+    {
+      testName: 'baz',
+      snap: {
+        bar: "bar"
+      },
+      path: './'
+    }
+  ]
+  const testName = 'baz'
+
+  const expected = [`Snapshot > ${testName}
+- SnapShot
++ Received
+- ${{foo: 'foo'}}
++ ${{bar: 'bar'}}
+`]
+
+  const actual = createSnapShotReport(oldSnapShot, newSnapShot)
+
+  t.deepEqual(actual, expected)
 })
