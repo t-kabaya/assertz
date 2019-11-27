@@ -52,6 +52,7 @@
     ],
     "require": [
       "ts-node/register"
-    ]
+    ],
+    "verbose": true
   }
 }

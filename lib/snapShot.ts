@@ -17,21 +17,22 @@ export const updateSnapShot = (path: string, snapShot: any) => {
 }
 
 export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapType[]): (string | undefined)[] => (
-  newSnapShot.map(newSS => oldSnapShot
+  newSnapShot.map(newSS => {
+    oldSnapShot
     .map(oldSS => {
-      if (oldSS.testName === newSS.testName) return `Snapshot > ${newSS.testName}
+      // testNameが一致して、かつsnapShotの中身が一致しない場合のみメッセージを表示。
+      if (oldSS.testName === newSS.testName && oldSS.snap !== newSS.snap) return `Snapshot > ${newSS.testName}
 - SnapShot
 + Received
 - ${oldSS.snap}
 + ${newSS.snap}
 `
-    })).flat().filter(Boolean)
+    })}).flat().filter(Boolean)
   // filter(Boolean)で、undefinedを取り除く。
 )
 
-
 // snapShotのアップデート(完成)
-export const runSnapShotTest = (snapShotTests: snapType[]) => {
+export const runSnapShotTest = (snapShotTests: snapType[]): string => {
   const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
   console.log({groupedSnapShots: JSON.stringify(groupedSnapShots)})
   // console.log({groupedSnapShots});
@@ -51,7 +52,7 @@ export const runSnapShotTest = (snapShotTests: snapType[]) => {
     }
     // const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))    
   }).flat().filter(Boolean).join('\n')
-  console.log({snapShotReport})
+  // console.log({snapShotReport})
 
   // snapShotReport.forEach((message: any) => console.log(message))
   return snapShotReport

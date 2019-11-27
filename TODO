@@ -14,13 +14,13 @@
 ・npxで、githubの特定のブランチを実行する。
 
 ## 今やること
-snapShot.tsの単体テストを書く
-maybeUpdateSnapShotの単体テストをsinonを使って書く
 snapShotテストで生成されたファイルが読みづらいな。
-createReporterを完成させて、アップデートが必要なスナップショットをかく。
 snapShotの中で、updateが必要なものを列挙する。
+runSnapShotTestの、単体テストを書くには、standaloneのfunctionのstubを書かないといけないが、sinonでは出来ない。
+https://ylv.io/stubing-a-standalone-function-in-javascript/
+以上の記事を読むこと。
+createSnapShotReportでのバグに苦しんでいる。単体テストが通らない。
 
-と言うより仕様を先に決めておく必要がある。
 
 # snapShotテスト仕様
 
