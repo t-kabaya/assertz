@@ -173,10 +173,11 @@ test('createSnapShotReport: do not detect no change snapshot', (t: any) => {
     },
     path: './'
   }]
+  
   const newSnapShot = [{
     testName: 'baz',
     snap: {
-      bar: "foo"
+      foo: "foo"
     },
     path: './'
   }]
@@ -184,7 +185,6 @@ test('createSnapShotReport: do not detect no change snapshot', (t: any) => {
   const actual = createSnapShotReport(oldSnapShot, newSnapShot)
   // console.log({expected})
   // console.log({actual})
-
   t.deepEqual(actual, [])
 })
 
@@ -222,8 +222,8 @@ test('createSnapShotReport: must match two object', (t: any) => {
 `]
 
   const actual = createSnapShotReport(oldSnapShot, newSnapShot)
-  console.log({actual})
-  console.log({expected})
+  // console.log({actual})
+  // console.log({expected})
 
   t.deepEqual(actual, expected)
 })
