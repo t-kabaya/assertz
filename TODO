@@ -12,15 +12,12 @@
 ・line numberを取得する（getLineNumber.jsを使って）
 ・e2eテストってどうしよう。
 ・npxで、githubの特定のブランチを実行する。
-
-## 今やること
-snapShotテストで生成されたファイルが読みづらいな。
-snapShotの中で、updateが必要なものを列挙する。
 runSnapShotTestの、単体テストを書くには、standaloneのfunctionのstubを書かないといけないが、sinonでは出来ない。
 https://ylv.io/stubing-a-standalone-function-in-javascript/
 以上の記事を読むこと。
-createSnapShotReportでのバグに苦しんでいる。単体テストが通らない。
 
+## 今やること
+uを押すと、snapShotをアップデート出来るようにする。
 
 # snapShotテスト仕様
 

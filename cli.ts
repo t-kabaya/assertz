@@ -5,10 +5,12 @@ import * as commander from 'commander'
 import * as fs from 'fs'
 import { findTests, runTests } from './testRunner'
 import { ROOT_FOLDER } from './env'
+import { updateSnapshot } from './lib/snapShot'
 
 commander
   .option('-d, --debug', 'output extra debugging')
   .option('-w, --watch', 'watch mode')
+  .option('-u, --update', 'update snapshot')
   .parse(process.argv)
 
 const paths: string[] = findTests(ROOT_FOLDER)
@@ -22,6 +24,8 @@ if (commander.watch) {
     
     throttle_runTest(paths)
   })
+} else if (commander.update) {
+  updateSnapshot(paths)
 } else {
   throttle_runTest(paths)
 }

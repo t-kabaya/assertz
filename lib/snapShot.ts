@@ -1,6 +1,7 @@
 const fs = require('fs')
 const _ = require('lodash')
 const { diffString } = require('json-diff')
+import { store } from '../store'
 
 // interfaceの代わりにtypeを使っておく。
 // 厳密には、typeより、interfaceを使った方が良いらしい。
@@ -11,11 +12,38 @@ type snapType = {
   path: string;
 }
 
-export const updateSnapShot = (path: string, snapShot: any) => {
-  const stringifiedSnapShot = JSON.stringify(snapShot)
-  fs.writeFileSync(path + ".snap", stringifiedSnapShot)
-  console.log('update snapShot')
+export const updateSnapshot = async (paths: string[]) => {
+  console.log('updateSnapshot')
+  console.log(paths)
+  const snapShotstore: any[] = []
+
+  for await (const path of paths) {
+    store.push({fileName: path})
+    require(path)
+  }
+
+
+  let tmpFileName = ''
+
+  store.reduce(({}, val) => {
+    if (!!val && val.fileName) {
+      tmpFileName = val.fileName
+      return
+    }
+
+    if (!!val && val.snap) {
+      snapShotstore.push({path: tmpFileName, testName: val.testName, snap: val.snap})
+    }
+  }, '')
+
+  snapShotstore.forEach(snapObj => {
+    const stringifiedSnapShot = JSON.stringify(snapObj.snap)
+    fs.writeFileSync(createSnapShotPath(snapObj.path), stringifiedSnapShot)
+    console.log('updated snapShot')
+  })
 }
+
+
 
 export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapType[]): (string | undefined)[] => (
   newSnapShot.map(newSS => {

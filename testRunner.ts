@@ -9,10 +9,6 @@ import { runSnapShotTest } from './lib/snapshot'
 
 export const runTests = async(paths: string[]) => {
 
-  // そもそも、テストが同時実行されない時点でよろしくない。
-  // 具体的には、現状は、一つのファイルをrequireして、その出力を行い、もう一つのファイルをrequireして、その出力を行いと言うように都度requireしてる。
-  // そのため、全てのfileをrequireする。その後出来た巨大なsingleton objectを元に、コンソールへの出力を考えると言う段取りにする。
-
   // storeに全てのtest objectを入れてしまう。
   for await (const path of paths) {
     store.push({fileName: path})

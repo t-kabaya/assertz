@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "env NODE_ENV='development' ts-node cli.ts",
+    "update": "env NODE_ENV='development' ts-node cli.ts -u",
     "watch": "env NODE_ENV='development' ts-node cli.ts -w",
     "version": "env NODE_ENV='development' ts-node -version",
     "publish": "npm publish",
