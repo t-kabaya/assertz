@@ -1,5 +1,6 @@
 const fs = require('fs')
 const _ = require('lodash')
+const { diffString } = require('json-diff')
 
 // interfaceの代わりにtypeを使っておく。
 // 厳密には、typeより、interfaceを使った方が良いらしい。
@@ -19,16 +20,13 @@ export const updateSnapShot = (path: string, snapShot: any) => {
 export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapType[]): (string | undefined)[] => (
   newSnapShot.map(newSS => {
     const snapshotNeedUpdate = oldSnapShot.filter(oldSS => oldSS.testName === newSS.testName && !_.isEqual(oldSS.snap, newSS.snap))
-    return snapshotNeedUpdate.map( snap =>
+    return snapshotNeedUpdate.map( oldSS =>
       // Nameが一致して、かつsnapShotの中身が一致しない場合のみメッセージを表示。
       `Snapshot > ${newSS.testName}
-- SnapShot
-+ Received
-- ${snap.snap}
-+ ${newSS.snap}
+diff:
+${diffString(oldSS.snap, newSS.snap)}
 `
       )
-      // test
   }).flat().filter(Boolean)
   // filter(Boolean)で、undefinedを取り除く。
 )
@@ -37,11 +35,8 @@ export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapT
 // snapShotのアップデート(完成)
 export const runSnapShotTest = (snapShotTests: snapType[]): string => {
   const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
-  console.log({groupedSnapShots: JSON.stringify(groupedSnapShots)})
-  // console.log({groupedSnapShots});
-  
-  
-  const snapShotReport: any = groupedSnapShots.map((newSnapShot: snapType[]) => {
+    
+  const snapShotReport: string = groupedSnapShots.map((newSnapShot: snapType[]) => {
     const path: string = newSnapShot[0].path
     const oldSnapShot: snapType[] = readSnapShot(path)
     // undefinedが帰ってきたら、古いsnapshotが存在しないと言うことなので、新規にsnapshotを作成する。
@@ -50,7 +45,6 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
       console.log({newSnapShot: JSON.stringify(newSnapShot)})
       writeSnapShot(newSnapShot)
     } else {
-      console.log('something wrong')
       return createSnapShotReport(oldSnapShot, newSnapShot)
     }
     // const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))    
@@ -58,7 +52,7 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
   // console.log({snapShotReport})
 
   // snapShotReport.forEach((message: any) => console.log(message))
-  return snapShotReport
+  return snapShotReport + 'To update snapshot run yarn test -u'
 }
 
 export const readSnapShot = (path: string) => {

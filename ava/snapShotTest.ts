@@ -1,6 +1,7 @@
 const fs = require('fs')
 const sinon = require('sinon')
 const test: any = require('ava')
+const { diffString } = require('json-diff')
 const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport } = require('../lib/snapShot')
 // import * as snapShot from '../lib/snapShot'
 
@@ -152,10 +153,8 @@ test('createSnapShotReport: must match object', (t: any) => {
   const testName = 'baz'
 
   const expected = [`Snapshot > ${testName}
-- SnapShot
-+ Received
-- ${{foo: 'foo'}}
-+ ${{bar: 'bar'}}
+diff:
+${diffString({foo: 'foo'}, {bar: 'bar'})}
 `]
 
   const actual = createSnapShotReport(oldSnapShot, newSnapShot)
@@ -215,10 +214,8 @@ test('createSnapShotReport: must match two object', (t: any) => {
   const testName = 'baz'
 
   const expected = [`Snapshot > ${testName}
-- SnapShot
-+ Received
-- ${{foo: 'foo'}}
-+ ${{bar: 'bar'}}
+diff:
+${diffString({foo: 'foo'}, {bar: 'bar'})}
 `]
 
   const actual = createSnapShotReport(oldSnapShot, newSnapShot)
