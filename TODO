@@ -18,6 +18,10 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 
 ## 今やること
 uを押すと、snapShotをアップデート出来るようにする。
+新しいsnapShotTestが存在する時は、
+updateしたsnapShotの数と、名前を表示したい。
+updateSnapshotのテストを書く。
+一つのファイルに複数のsnapShotが書けない。
 
 # snapShotテスト仕様
 
@@ -40,3 +44,8 @@ testを走らせる。
 
 assertz updateSnapShotを走らせると、
 snapShotがアップデートされる。
+
+{
+  "foo test": "777",
+  "object test": "{foo: "foo"}"
+}

@@ -13,37 +13,38 @@ type snapType = {
 }
 
 export const updateSnapshot = async (paths: string[]) => {
-  console.log('updateSnapshot')
-  console.log(paths)
-  const snapShotstore: any[] = []
-
   for await (const path of paths) {
-    store.push({fileName: path})
+    store.push({path})
     require(path)
   }
 
+  // let tmpFileName = ''
+  // const snapshotStore: any[] = store.map((val: any) => {
+  //   if (val.fileName) {
+  //     tmpFileName = val.fileName
+  //     return
+  //   }
 
-  let tmpFileName = ''
+  //   return {path: tmpFileName, testName: val.testName, snap: val.snap}
+  // })
 
-  store.reduce(({}, val) => {
-    if (!!val && val.fileName) {
-      tmpFileName = val.fileName
-      return
-    }
+  // snapshotStore.forEach(snapObj => {
+  //   const snapshot = JSON.stringify(snapObj.snap)
+  //   const path = createSnapShotPath(snapObj.path)
+  //   fs.writeFileSync(path, snapshot)
+  // })
 
-    if (!!val && val.snap) {
-      snapShotstore.push({path: tmpFileName, testName: val.testName, snap: val.snap})
-    }
-  }, '')
-
-  snapShotstore.forEach(snapObj => {
-    const stringifiedSnapShot = JSON.stringify(snapObj.snap)
-    fs.writeFileSync(createSnapShotPath(snapObj.path), stringifiedSnapShot)
-    console.log('updated snapShot')
-  })
+  createSnapshotJson(store).forEach((snapObj: {path: string, snap: object}) => 
+    fs.writeFileSync(snapObj.path, snapObj.snap)
+  )
+  console.log('updated snapShot')
 }
 
 
+// key, valueが、stringifyedされたオブジェクトがリターンされる。
+export const createSnapshotJson = ({}: snapType[]): object[] => {
+  return [{path: "aaa", snapshot: {"foo": "777", "bar": "8888"}}]
+}
 
 export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapType[]): (string | undefined)[] => (
   newSnapShot.map(newSS => {
@@ -56,7 +57,6 @@ ${diffString(oldSS.snap, newSS.snap)}
 `
       )
   }).flat().filter(Boolean)
-  // filter(Boolean)で、undefinedを取り除く。
 )
 
 

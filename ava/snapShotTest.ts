@@ -2,7 +2,7 @@ const fs = require('fs')
 const sinon = require('sinon')
 const test: any = require('ava')
 const { diffString } = require('json-diff')
-const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport } = require('../lib/snapShot')
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport, updateSnapShot, createSnapshotJson } = require('../lib/snapShot')
 // import * as snapShot from '../lib/snapShot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
@@ -236,3 +236,36 @@ ${diffString({foo: 'foo'}, {bar: 'bar'})}
 
 //   t.deepEqual(actual, [])
 // })
+
+/*------------------------------- updateSnapshotTest -----------------------------------*/
+
+test('updateSnapShot: ', (t: any) => {
+  sinon.stub(fs, 'readFileSync').returns('{"foo": 777}')
+  
+  const output = readSnapShot('./README.md')
+  t.deepEqual(output, {foo: 777})
+  sinon.restore()
+})
+
+
+/*--------------------------------- createSnapshotJson ---------------------------------------------*/
+
+test('createSnapshotJson: ', (t: any) => {
+  const input = [
+    {path: 'foo'},
+    {type: 'snap', testName: 'foo1', snap: "foo"},
+    {type: 'snap', testName: 'foo2', snap: "foo"}, 
+    {path: 'bar'},
+    {type: 'snap', testName: 'bar1', snap: "bar"},
+    {type: 'snap', testName: 'bar2', snap: "bar"},
+  ]
+
+  const expected = [
+    {path: 'foo', snap: {"foo1": "foo", "foo2": "foo"}},
+    {path: 'bar', snap: {"bar1": "bar", "bar2": "bar"}}
+  ]
+
+  const actual = createSnapshotJson(input)
+  
+  t.deepEqual(actual, expected)
+})
