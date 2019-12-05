@@ -20,10 +20,14 @@ export const updateSnapshot = async (paths: string[]) => {
     require(path)
   }
 
-  createSnapshotJson(store).forEach((snapObj: {path: string, snap: object}) => 
+  createSnapshotJson(excludeNotSnapShot(store)).forEach((snapObj: {path: string, snap: object}) => 
     fs.writeFileSync(createSnapShotPath(snapObj.path), JSON.stringify(snapObj.snap))
   )
   console.log('updated snapShot')
+}
+
+export const excludeNotSnapShot = () => {
+
 }
 
 export const createSnapshotJson = (store: storeType): object[] => (

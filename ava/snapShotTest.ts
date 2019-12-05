@@ -2,7 +2,7 @@ const fs = require('fs')
 const sinon = require('sinon')
 const test: any = require('ava')
 const { diffString } = require('json-diff')
-const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport, updateSnapShot, createSnapshotJson } = require('../lib/snapShot')
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport, updateSnapShot, createSnapshotJson, excludeNotSnapshot } = require('../lib/snapShot')
 // import * as snapShot from '../lib/snapShot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
@@ -276,6 +276,40 @@ test('createSnapshotJson: must return blank array', (t: any) => {
   const expected: any[] = []
 
   const actual = createSnapshotJson(input)
+  
+  t.deepEqual(actual, expected)
+})
+
+test('createSnapshotJson: ', (t: any) => {
+  const input: any[] = [
+    {path: 'bar'}
+  ]
+
+  const expected: any[] = []
+
+  const actual = createSnapshotJson(input)
+  
+  t.deepEqual(actual, expected)
+})
+
+/*------------------------------- excludeNotSnapshot ----------------------------------*/
+
+
+test('createSnapshotJson: must return valid value', (t: any) => {
+  const input = [
+    {path: 'foo'},
+    {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
+    {path: 'bar'},
+    {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
+    {type: 'snap', testName: 'bar1', snap: "bar"},
+  ]
+
+  const expected = [
+    {path: 'bar'},
+    {type: 'snap', testName: 'bar1', snap: "bar"},
+  ]  
+
+  const actual = excludeNotSnapshot(input)
   
   t.deepEqual(actual, expected)
 })
