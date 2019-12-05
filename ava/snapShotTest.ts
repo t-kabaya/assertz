@@ -250,7 +250,7 @@ test('updateSnapShot: ', (t: any) => {
 
 /*--------------------------------- createSnapshotJson ---------------------------------------------*/
 
-test('createSnapshotJson: ', (t: any) => {
+test('createSnapshotJson: must return valid value', (t: any) => {
   const input = [
     {path: 'foo'},
     {type: 'snap', testName: 'foo1', snap: "foo"},
@@ -264,6 +264,16 @@ test('createSnapshotJson: ', (t: any) => {
     {path: 'foo', snap: {"foo1": "foo", "foo2": "foo"}},
     {path: 'bar', snap: {"bar1": "bar", "bar2": "bar"}}
   ]
+
+  const actual = createSnapshotJson(input)
+  
+  t.deepEqual(actual, expected)
+})
+
+test('createSnapshotJson: must return blank array', (t: any) => {
+  const input: any[] = []
+
+  const expected: any[] = []
 
   const actual = createSnapshotJson(input)
   
