@@ -20,8 +20,7 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 uを押すと、snapShotをアップデート出来るようにする。
 新しいsnapShotTestが存在する時は、
 updateしたsnapShotの数と、名前を表示したい。
-updateSnapshotのテストを書く。
-一つのファイルに複数のsnapShotが書けない。
+一つのファイルに複数のsnapShotが書けない。これを修正するために、createSnapshotJsonを記述する。
 
 # snapShotテスト仕様
 
