@@ -20,14 +20,23 @@ export const updateSnapshot = async (paths: string[]) => {
     require(path)
   }
 
-  createSnapshotJson(excludeNotSnapShot(store)).forEach((snapObj: {path: string, snap: object}) => 
+  createSnapshotJson(store).forEach((snapObj: {path: string, snap: object}) => 
     fs.writeFileSync(createSnapShotPath(snapObj.path), JSON.stringify(snapObj.snap))
   )
   console.log('updated snapShot')
 }
 
-export const excludeNotSnapShot = () => {
-
+export const excludeNotSnapshot = (store: any) => {
+  const tmpArr = store.filter((obj: any) => obj.type !== "unitTest")
+  const isSnapshot = tmpArr.filter((obj: any) => obj.type === "snap").length === 0
+  
+  if (isSnapshot) return []
+  
+  return tmpArr.filter((obj: any, i: any) => {
+    if (i === tmpArr.length) return true
+    
+    return !(obj && obj.path && tmpArr[i + 1].path)
+  })
 }
 
 export const createSnapshotJson = (store: storeType): object[] => (

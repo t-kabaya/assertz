@@ -20,6 +20,7 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 ・watch modeで、uを押すと、snapShotをアップデート出来るようにする。
 ・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
+・excludeNotSnapshotのテストが通った。createSnapshotJsonとexcludeSnapshotとの結合も視野に入れ、リファクタリングする。
 
 # snapShotテスト仕様
 

@@ -280,22 +280,10 @@ test('createSnapshotJson: must return blank array', (t: any) => {
   t.deepEqual(actual, expected)
 })
 
-test('createSnapshotJson: ', (t: any) => {
-  const input: any[] = [
-    {path: 'bar'}
-  ]
-
-  const expected: any[] = []
-
-  const actual = createSnapshotJson(input)
-  
-  t.deepEqual(actual, expected)
-})
-
 /*------------------------------- excludeNotSnapshot ----------------------------------*/
 
 
-test('createSnapshotJson: must return valid value', (t: any) => {
+test('excludeNotSnapshot: must return valid value', (t: any) => {
   const input = [
     {path: 'foo'},
     {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
@@ -307,7 +295,20 @@ test('createSnapshotJson: must return valid value', (t: any) => {
   const expected = [
     {path: 'bar'},
     {type: 'snap', testName: 'bar1', snap: "bar"},
-  ]  
+  ]
+
+  const actual = excludeNotSnapshot(input)
+  
+  t.deepEqual(actual, expected)
+})
+
+test('excludeNotSnapshot: must return blank', (t: any) => {
+  const input = [
+    {path: 'foo'},
+    {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
+  ]
+
+  const expected: any = []
 
   const actual = excludeNotSnapshot(input)
   
