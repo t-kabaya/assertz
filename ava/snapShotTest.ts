@@ -1,6 +1,7 @@
 const fs = require('fs')
 const sinon = require('sinon')
 const test: any = require('ava')
+import {UNIT_TEST, SNAP} from '../index'
 const { deepEqual } = require('./avaUtils')
 const { diffString } = require('json-diff')
 const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot } = require('../lib/snapShot')
@@ -254,11 +255,11 @@ test('updateSnapShot: ', (t: any) => {
 test('createSnapshotJson: must return valid value', (t: any) => {
   const input = [
     {path: 'foo'},
-    {type: 'snap', testName: 'foo1', snap: "foo"},
-    {type: 'snap', testName: 'foo2', snap: "foo"},
+    {type: SNAP, testName: 'foo1', snap: "foo"},
+    {type: SNAP, testName: 'foo2', snap: "foo"},
     {path: 'bar'},
-    {type: 'snap', testName: 'bar1', snap: "bar"},
-    {type: 'snap', testName: 'bar2', snap: "bar"},
+    {type: SNAP, testName: 'bar1', snap: "bar"},
+    {type: SNAP, testName: 'bar2', snap: "bar"},
   ]
 
   const expected = [
@@ -287,15 +288,15 @@ test('createSnapshotJson: must return blank array', (t: any) => {
 test('excludeNotSnapshot: must return valid value', (t: any) => {
   const input = [
     {path: 'foo'},
-    {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
+    {type: UNIT_TEST, testName: 'foo1', expected: '777', received: '888'},
     {path: 'bar'},
-    {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
-    {type: 'snap', testName: 'bar1', snap: "bar"},
+    {type: UNIT_TEST, testName: 'foo1', expected: '777', received: '888'},
+    {type: SNAP, testName: 'bar1', snap: "bar"},
 ]
 
   const expected = [
     {path: 'bar'},
-    {type: 'snap', testName: 'bar1', snap: "bar"},
+    {type: SNAP, testName: 'bar1', snap: "bar"},
   ]
 
   const actual = excludeNotSnapshot(input)
@@ -306,7 +307,7 @@ test('excludeNotSnapshot: must return valid value', (t: any) => {
 test('excludeNotSnapshot: must return blank', (t: any) => {
   const input = [
     {path: 'foo'},
-    {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
+    {type: UNIT_TEST, testName: 'foo1', expected: '777', received: '888'},
   ]
 
   const expected: any = []
@@ -319,13 +320,13 @@ test('excludeNotSnapshot: must return blank', (t: any) => {
 // test('excludeNotSnapshot: path object after snap object return type', (t: any) => {
 //   const input = [
 //     {path: 'bar'},
-//     {type: 'snap', testName: 'bar1', snap: "bar"},
+//     {type: SNAP, testName: 'bar1', snap: "bar"},
 //     {path: 'foo'},
 //   ]
 
 //   const expected: any = [
 //     {path: 'bar'},
-//     {type: 'snap', testName: 'bar1', snap: "bar"},
+//     {type: SNAP, testName: 'bar1', snap: "bar"},
 //   ]
 
 //   const actual = excludeNotSnapshot(input)

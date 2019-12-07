@@ -6,6 +6,7 @@ import { createSummary } from './lib/createSummary'
 import pipe from './utils/pipelineOperator'
 import log from './utils/logUtils'
 import { runSnapShotTest } from './lib/snapshot'
+import { SNAP } from './index'
 
 export const runTests = async(paths: string[]) => {
 
@@ -30,7 +31,7 @@ export const runTests = async(paths: string[]) => {
     }
 
     // snap shot test
-    if (val.type === 'snap') {
+    if (val.type === SNAP) {
       acc.snapShotStore.push({snap: val.snap, testName: val.testName, path: acc.fileName})
 
       return acc
