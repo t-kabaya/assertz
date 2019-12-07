@@ -13,16 +13,16 @@ test('readSnap: if file does not exist, then return blank array', (t: any) => {
   sinon.stub(fs, 'readFileSync').returns(new Error())
 
   const output = readSnapShot('./README.md')
-  t.deepEqual(output, [])
+  deepEqual(t, output, [])
   sinon.restore()
 })
 
 // もしファイルの中身がjsonなら、jsオブジェクトを返す事。
 test('readSnap: if fileContent is json, then return js objcet', (t: any) => {
   sinon.stub(fs, 'readFileSync').returns('{"foo": 777}')
-  
+
   const output = readSnapShot('./README.md')
-  t.deepEqual(output, {foo: 777})
+  deepEqual(t, output, {foo: 777})
   sinon.restore()
 })
 
@@ -81,14 +81,14 @@ test('groupByPath: must return nested array', (t: any) => {
   ]
 
   const output = groupByPath(input)
-  t.deepEqual(output, expected)
+  deepEqual(t, output, expected)
 })
 
 /*---------------------------------- maybeUpdateSnapShot ------------------------------------*/
 
 // 古いsnapShotと、新しいsnapShotが異なる場合、trueを返さなくてはならない。
 test('shouldUpdateSnapShot: if old snapShot and new snapShot is different, then return true', (t: any) => {
-  const oldSnapShot = 
+  const oldSnapShot =
     [
       {
         testName: 'some snap',
@@ -118,7 +118,7 @@ test('shouldUpdateSnapShot: if old snapShot and new snapShot is different, then 
   // sinon.stub(updateSnapShot, 'readFileSync').returns(new Error())
 
   const output = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))
-  t.deepEqual(output, true)
+  deepEqual(t, output, true)
   // sinon.restore()
 })
 
@@ -127,9 +127,9 @@ test('shouldUpdateSnapShot: if old snapShot and new snapShot is different, then 
 
 test('runSnapShotTest: ', (t: any) => {
   sinon.stub(fs, 'readFileSync').returns('{"foo": 777}')
-  
+
   const output = readSnapShot('./README.md')
-  t.deepEqual(output, {foo: 777})
+  deepEqual(t, output, {foo: 777})
   sinon.restore()
 })
 
@@ -162,7 +162,7 @@ ${diffString({foo: 'foo'}, {bar: 'bar'})}
   // console.log({expected})
   // console.log({actual})
 
-  t.deepEqual(actual, expected)
+  deepEqual(t, actual, expected)
 })
 
 test('createSnapShotReport: do not detect no change snapshot', (t: any) => {
@@ -173,7 +173,7 @@ test('createSnapShotReport: do not detect no change snapshot', (t: any) => {
     },
     path: './'
   }]
-  
+
   const newSnapShot = [{
     testName: 'baz',
     snap: {
@@ -185,7 +185,7 @@ test('createSnapShotReport: do not detect no change snapshot', (t: any) => {
   const actual = createSnapShotReport(oldSnapShot, newSnapShot)
   // console.log({expected})
   // console.log({actual})
-  t.deepEqual(actual, [])
+  deepEqual(t, actual, [])
 })
 
 test('createSnapShotReport: must match two object', (t: any) => {
@@ -223,7 +223,7 @@ ${diffString({foo: 'foo'}, {bar: 'bar'})}
   // console.log({actual})
   // console.log({expected})
 
-  t.deepEqual(actual, expected)
+  deepEqual(t, actual, expected)
 })
 
 // TODO: delete this test. this is example of stub standalone function
@@ -235,16 +235,16 @@ ${diffString({foo: 'foo'}, {bar: 'bar'})}
 
 //   const actual = snapShot.readSnapShot('oo')
 
-//   t.deepEqual(actual, [])
+//   deepEqual(t, actual, [])
 // })
 
 /*------------------------------- updateSnapshotTest -----------------------------------*/
 
 test('updateSnapShot: ', (t: any) => {
   sinon.stub(fs, 'readFileSync').returns('{"foo": 777}')
-  
+
   const output = readSnapShot('./README.md')
-  t.deepEqual(output, {foo: 777})
+  deepEqual(t, output, {foo: 777})
   sinon.restore()
 })
 
@@ -255,7 +255,7 @@ test('createSnapshotJson: must return valid value', (t: any) => {
   const input = [
     {path: 'foo'},
     {type: 'snap', testName: 'foo1', snap: "foo"},
-    {type: 'snap', testName: 'foo2', snap: "foo"}, 
+    {type: 'snap', testName: 'foo2', snap: "foo"},
     {path: 'bar'},
     {type: 'snap', testName: 'bar1', snap: "bar"},
     {type: 'snap', testName: 'bar2', snap: "bar"},
@@ -267,8 +267,8 @@ test('createSnapshotJson: must return valid value', (t: any) => {
   ]
 
   const actual = createSnapshotJson(input)
-  
-  t.deepEqual(actual, expected)
+
+  deepEqual(t, actual, expected)
 })
 
 test('createSnapshotJson: must return blank array', (t: any) => {
@@ -277,8 +277,8 @@ test('createSnapshotJson: must return blank array', (t: any) => {
   const expected: any[] = []
 
   const actual = createSnapshotJson(input)
-  
-  t.deepEqual(actual, expected)
+
+  deepEqual(t, actual, expected)
 })
 
 /*------------------------------- excludeNotSnapshot ----------------------------------*/
@@ -291,7 +291,7 @@ test('excludeNotSnapshot: must return valid value', (t: any) => {
     {path: 'bar'},
     {type: 'unitTest', testName: 'foo1', expected: '777', received: '888'},
     {type: 'snap', testName: 'bar1', snap: "bar"},
-  ]
+]
 
   const expected = [
     {path: 'bar'},
@@ -299,8 +299,8 @@ test('excludeNotSnapshot: must return valid value', (t: any) => {
   ]
 
   const actual = excludeNotSnapshot(input)
-  
-  t.deepEqual(actual, expected)
+
+  deepEqual(t, actual, expected)
 })
 
 test('excludeNotSnapshot: must return blank', (t: any) => {
@@ -312,23 +312,23 @@ test('excludeNotSnapshot: must return blank', (t: any) => {
   const expected: any = []
 
   const actual = excludeNotSnapshot(input)
-  
-  t.deepEqual(actual, expected)
-})
 
-test('excludeNotSnapshot: path object after snap object return type', (t: any) => {
-  const input = [
-    {path: 'bar'},
-    {type: 'snap', testName: 'bar1', snap: "bar"},
-    {path: 'foo'},
-  ]
-
-  const expected: any = [
-    {path: 'bar'},
-    {type: 'snap', testName: 'bar1', snap: "bar"},
-  ]
-
-  const actual = excludeNotSnapshot(input)
-  
   deepEqual(t, actual, expected)
 })
+
+// test('excludeNotSnapshot: path object after snap object return type', (t: any) => {
+//   const input = [
+//     {path: 'bar'},
+//     {type: 'snap', testName: 'bar1', snap: "bar"},
+//     {path: 'foo'},
+//   ]
+
+//   const expected: any = [
+//     {path: 'bar'},
+//     {type: 'snap', testName: 'bar1', snap: "bar"},
+//   ]
+
+//   const actual = excludeNotSnapshot(input)
+
+//   deepEqual(t, actual, expected)
+// })

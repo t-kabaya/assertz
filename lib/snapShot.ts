@@ -29,37 +29,16 @@ export const updateSnapshot = async (paths: string[]) => {
 }
 
 export const excludeNotSnapshot = (store: any) => {
-  // const tmpArr = store.filter((obj: any) => obj.type !== "unitTest")
-  // const isSnapshot = tmpArr.filter((obj: any) => obj.type === "snap").length === 0
-  // console.log({tmpArr})
-
-  let tmpFileName: string = ''
-
-  const res = store.map((obj: any, index: number) => {
-    if (index === store.length && obj.path) {
-      return null
-    } else if (tmpFileName === '' && obj.path) {
-      tmpFileName = obj.path
-      return obj
-    } else if (obj.type === 'snap') {
-      tmpFileName = ''
-      return obj
-    }
-  }).filter(Boolean)
+  const tmpArr = store.filter((obj: any) => obj.type !== "unitTest")
+  const isSnapshot = tmpArr.filter((obj: any) => obj.type === "snap").length === 0
   
-  return res
-  // return JSON.stringify(res)
+  if (isSnapshot) return []
   
-  // if (isSnapshot) return []
-  
-  // return tmpArr.filter((obj: any, i: any) => {
-  //   if (i === tmpArr.length && obj.path) return false
-
-  //   const isCurrentPath = obj && obj.path
-  //   const isNextPath = tmpArr[i + 1] && tmpArr[i + 1].path
+  return tmpArr.filter((obj: any, i: any) => {
+    if (i === tmpArr.length) return true
     
-  //   return isCurrentPath && isNextPath
-  // })
+    return !(obj && obj.path && tmpArr[i + 1] && tmpArr[i + 1].path)
+  })
 }
 
 export const createSnapshotJson = (store: storeType): object[] => (
