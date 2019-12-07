@@ -1,8 +1,9 @@
 const fs = require('fs')
 const sinon = require('sinon')
 const test: any = require('ava')
+const { deepEqual } = require('./avaUtils')
 const { diffString } = require('json-diff')
-const { readSnapShot, groupByPath, shouldUpdateSnapShot, runSnapShotTest, createSnapShotReport, updateSnapShot, createSnapshotJson, excludeNotSnapshot } = require('../lib/snapShot')
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot } = require('../lib/snapShot')
 // import * as snapShot from '../lib/snapShot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
@@ -313,4 +314,21 @@ test('excludeNotSnapshot: must return blank', (t: any) => {
   const actual = excludeNotSnapshot(input)
   
   t.deepEqual(actual, expected)
+})
+
+test('excludeNotSnapshot: path object after snap object return type', (t: any) => {
+  const input = [
+    {path: 'bar'},
+    {type: 'snap', testName: 'bar1', snap: "bar"},
+    {path: 'foo'},
+  ]
+
+  const expected: any = [
+    {path: 'bar'},
+    {type: 'snap', testName: 'bar1', snap: "bar"},
+  ]
+
+  const actual = excludeNotSnapshot(input)
+  
+  deepEqual(t, actual, expected)
 })

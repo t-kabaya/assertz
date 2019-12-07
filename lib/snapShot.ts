@@ -2,6 +2,8 @@ const fs = require('fs')
 const _ = require('lodash')
 const { diffString } = require('json-diff')
 import { store } from '../store'
+import pipe from '../utils/pipelineOperator'
+
 
 // interfaceの代わりにtypeを使っておく。
 // 厳密には、typeより、interfaceを使った方が良いらしい。
@@ -20,23 +22,44 @@ export const updateSnapshot = async (paths: string[]) => {
     require(path)
   }
 
-  createSnapshotJson(store).forEach((snapObj: {path: string, snap: object}) => 
+  pipe(store, excludeNotSnapshot, createSnapshotJson).forEach((snapObj: {path: string, snap: object}) => 
     fs.writeFileSync(createSnapShotPath(snapObj.path), JSON.stringify(snapObj.snap))
   )
   console.log('updated snapShot')
 }
 
 export const excludeNotSnapshot = (store: any) => {
-  const tmpArr = store.filter((obj: any) => obj.type !== "unitTest")
-  const isSnapshot = tmpArr.filter((obj: any) => obj.type === "snap").length === 0
+  // const tmpArr = store.filter((obj: any) => obj.type !== "unitTest")
+  // const isSnapshot = tmpArr.filter((obj: any) => obj.type === "snap").length === 0
+  // console.log({tmpArr})
+
+  let tmpFileName: string = ''
+
+  const res = store.map((obj: any, index: number) => {
+    if (index === store.length && obj.path) {
+      return null
+    } else if (tmpFileName === '' && obj.path) {
+      tmpFileName = obj.path
+      return obj
+    } else if (obj.type === 'snap') {
+      tmpFileName = ''
+      return obj
+    }
+  }).filter(Boolean)
   
-  if (isSnapshot) return []
+  return res
+  // return JSON.stringify(res)
   
-  return tmpArr.filter((obj: any, i: any) => {
-    if (i === tmpArr.length) return true
+  // if (isSnapshot) return []
+  
+  // return tmpArr.filter((obj: any, i: any) => {
+  //   if (i === tmpArr.length && obj.path) return false
+
+  //   const isCurrentPath = obj && obj.path
+  //   const isNextPath = tmpArr[i + 1] && tmpArr[i + 1].path
     
-    return !(obj && obj.path && tmpArr[i + 1].path)
-  })
+  //   return isCurrentPath && isNextPath
+  // })
 }
 
 export const createSnapshotJson = (store: storeType): object[] => (
