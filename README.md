@@ -71,3 +71,41 @@ Difference:
 - 4
 + 2
 ```
+
+# Snapshot testing
+
+assertz supports snapshot testing, [as introduced by Jest](https://facebook.github.io/jest/docs/snapshot-testing.html), through its [Assertions](./03-assertions.md) interface. You can snapshot any value as well as React elements:
+
+```js
+// Your component
+const HelloWorld = () => <h1>Hello World...!</h1>;
+
+export default HelloWorld;
+```
+
+```js
+// Your test
+import { snap } from 'ava';
+import render from 'react-test-renderer';
+import HelloWorld from '.';
+
+{
+  const tree = render.create(<HelloWorld/>).toJSON();
+  snap(tree, 'HelloWorld component');
+}
+
+```
+
+Say you have `~/project/test/main.test.js` which contains snapshot assertions. assertz will create a file:
+
+* `~/project/test/snapshots/main.test.snap`
+
+The file contains the actual snapshot and is required for future comparisons. 
+
+You can then check your code. If the change was intentional you can use the `--update` (or `-u`) flag to update the snapshots:
+
+```console
+$ assertz --update
+```
+
+The snapshot files will be saved in a directory structure that mirrors that of your test files.
