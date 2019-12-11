@@ -11,10 +11,7 @@ const snap = (snap: any, testName: string) => {
   store.push({snap, testName, type: SNAP})
 }
 
-module.exports = assert
-// exports.assert = assert
-// exports.snap = snap
 module.exports = {
-  assert: assert,
-  snap: snap
+  assert,
+  snap
 }

@@ -1,13 +1,10 @@
-const fs = require('fs')
-const _ = require('lodash')
+import * as fs from 'fs'
+import * as _ from 'lodash'
 const { diffString } = require('json-diff')
 import { store } from '../store'
 import pipe from '../utils/pipelineOperator'
 
-
-// interfaceの代わりにtypeを使っておく。
-// 厳密には、typeより、interfaceを使った方が良いらしい。
-
+// use type instead of interface, because type is enough for my purpose.
 type snapType = {
   testName: string;
   snap: any;
@@ -57,7 +54,7 @@ export const createSnapShotReport = (oldSnapShot: snapType[], newSnapShot: snapT
   newSnapShot.map(newSS => {
     const snapshotNeedUpdate = oldSnapShot.filter(oldSS => oldSS.testName === newSS.testName && !_.isEqual(oldSS.snap, newSS.snap))
     return snapshotNeedUpdate.map( oldSS =>
-      // Nameが一致して、かつsnapShotの中身が一致しない場合のみメッセージを表示。
+      // show message if same name and not same snapshot content
       `Snapshot > ${newSS.testName}
 diff:
 ${diffString(oldSS.snap, newSS.snap)}
@@ -67,27 +64,21 @@ ${diffString(oldSS.snap, newSS.snap)}
 )
 
 
-// snapShotのアップデート(完成)
 export const runSnapShotTest = (snapShotTests: snapType[]): string => {
   const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
     
   const snapShotReport: string = groupedSnapShots.map((newSnapShot: snapType[]) => {
     const path: string = newSnapShot[0].path
     const oldSnapShot: snapType[] = readSnapShot(path)
-    // undefinedが帰ってきたら、古いsnapshotが存在しないと言うことなので、新規にsnapshotを作成する。
-    console.log({oldSnapShot})
+    // if oldSnapShot is null, then create new snapshot.
     if (oldSnapShot.length === 0) {
-      console.log({newSnapShot: JSON.stringify(newSnapShot)})
       writeSnapShot(newSnapShot)
     } else {
       return createSnapShotReport(oldSnapShot, newSnapShot)
     }
-    // const isUpdate: boolean = shouldUpdateSnapShot(JSON.stringify(oldSnapShot), JSON.stringify(newSnapShot))    
   }).flat().filter(Boolean).join('\n')
-  // console.log({snapShotReport})
 
-  // snapShotReport.forEach((message: any) => console.log(message))
-  return snapShotReport + 'To update snapshot run yarn test -u'
+  return snapShotReport + 'To update snapshot run assertz -u'
 }
 
 export const readSnapShot = (path: string) => {
@@ -110,13 +101,11 @@ const writeSnapShot = (newSnapShot: snapType[]): void => {
   })
 }
 
-const createSnapShotPath = (path: string) => {
-  return path.replace('.js', '.snap').replace('.ts', '.snap')
-}
+const createSnapShotPath = (path: string) => (
+  path.replace('.js', '.snap').replace('.ts', '.snap')
+)
 
-// path毎に分ける
 export const groupByPath = (testObject: snapType[]): snapType[][] => {
-  // must sort
   const paths = _.sortedUniq(testObject.map(testObj => testObj.path))
 
   return paths.map((path: any) => testObject.filter((testObj: any) => testObj.path === path))
@@ -124,25 +113,10 @@ export const groupByPath = (testObject: snapType[]): snapType[][] => {
 
 // path毎に分けられた、arrayがinputとして与えられる。それに対して、pathのファイルの中身を読み、updateする必要があれば、
 // アップデートする。
-export const shouldUpdateSnapShot = (oldSnapHot: string, newSnapShot: string) => {
-    const shouldUpdateSnapShot = oldSnapHot !== newSnapShot
-    return shouldUpdateSnapShot
+export const shouldUpdateSnapShot = (oldSnapHot: string, newSnapShot: string) => (
+  oldSnapHot !== newSnapShot
+)
 
-    // const existingSnapShotNames = Object.keys(existingSnapShot)
-    // const shouldUpdateSnapShot = pathObj.some((obj: any) =>  existingSnapShotNames.includes(obj.path))
-   
-    // もしアップデートが必要な場合、
-    // if (shouldUpdateSnapShot) updateSnapShot(path, JSON.stringify(testArray))
-  
-}
-
-export const deepEqual = (a: object, b: object) => {
-  return JSON.stringify(a) === JSON.stringify(b)
-}
-
-// updateSnapShot(tests, path)
-// const failureTestName = findFailureTest(mockTests)
-// console.log(failureTestName)
-
-// exports.findFailureTest = findFailureTest
-
+export const deepEqual = (a: object, b: object) => (
+  JSON.stringify(a) === JSON.stringify(b)
+)
