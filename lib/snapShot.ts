@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as _ from 'lodash'
 const { diffString } = require('json-diff')
-import { store } from '../store'
+import { store } from './store'
 import pipe from '../utils/pipelineOperator'
 
 // use type instead of interface, because type is enough for my purpose.

@@ -2,11 +2,11 @@ import * as fs from 'fs'
 import * as _ from 'lodash'
 import { store } from './store'
 import { createTestFailureMessage } from './createTestFailureMessage'
-import { createSummary } from './lib/createSummary'
-import pipe from './utils/pipelineOperator'
-import log from './utils/logUtils'
-import { runSnapShotTest } from './lib/snapshot'
-import { SNAP } from './index'
+import { createSummary } from './createSummary'
+import pipe from '../utils/pipelineOperator'
+import log from '../utils/logUtils'
+import { runSnapShotTest } from './snapshot'
+import { SNAP } from '../index'
 
 export const runTests = async(paths: string[]) => {
 

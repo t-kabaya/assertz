@@ -3,7 +3,7 @@
 import { throttle } from 'lodash'
 import * as commander from 'commander'
 import * as fs from 'fs'
-import { findTests, runTests } from './testRunner'
+import { findTests, runTests } from './lib/testRunner'
 import { ROOT_FOLDER } from './env'
 import { updateSnapshot } from './lib/snapShot'
 

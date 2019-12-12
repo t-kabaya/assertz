@@ -12,9 +12,6 @@
       "es2019"
     ]
   },
-  "indlude": [
-    "*/"
-  ],
   "exclude": [
     "dist",
     "node_modules"

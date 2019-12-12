@@ -1,4 +1,4 @@
-import { store } from './store'
+import { store } from './lib/store'
 
 export const UNIT_TEST = 'unitTest'
 export const SNAP = 'snap'
