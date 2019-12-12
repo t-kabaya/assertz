@@ -2,10 +2,7 @@
 
 ・個別のファイル名ごとにテストを実行出来るようにする。
 ・テストが失敗してもエラーが帰らないため、huskyによるpre commitがうまく動作しない。
-・ターミナルをクリックすると、テストへ移動出来るように。
-・エラーが発生した時のメッセージを考える。
 ・fs.watchは、linuxで動かない機能があるので、node-watchなど、サードパーティライブラリで、書き換える。
-・テストをもっと書く
 ・before, afterも、作っておきたい。
 ・async testでは、即時関数を使用している。この時のボイラープレートを無くしたいな。
 ・notEqualというマッチャーを一つだけ増やす
@@ -15,38 +12,10 @@
 runSnapShotTestの、単体テストを書くには、standaloneのfunctionのstubを書かないといけないが、sinonでは出来ない。
 https://ylv.io/stubing-a-standalone-function-in-javascript/
 以上の記事を読むこと。
+・ターミナルをクリックすると、テストへ移動できるように。（例えば、ターミナル上で、README.mdだと、移動出来ないが、./README.mdだと移動出来る。）
 
 ## 今やること
 ・watch modeで、uを押すと、snapShotをアップデート出来るようにする。
 ・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
-・snapShotのReadmeを書く。
 ・snapshotが、__snapshot__フォルダに保存されるようにする。
-
-
-# snapShotテスト仕様
-
-# syntax
-snapShot(tree, 'snapshot test')
-スナップショットが使われているファイルのコピーを作成し、その中身を書き込む。
-someTest.js
-snapshot/someTest.snap
-というように。
-
-testNameがない時に、どう「変化した」ことを検知するんだろう。
-ファイル内に、以前と同じ、jsonがあるか探す？
-もし、たまたま、同じjsonがあった場合は、テストの失敗を成功と捉えてしまう恐れがある。
-jestは、testNameで、snapShotを識別していたようだ。
-
-testを走らせる。
-(新しいスナップショットは、テストを走らせた段階で書き込む。)
-下
-スナップショットが間違っていることがみつかる。
-
-assertz updateSnapShotを走らせると、
-snapShotがアップデートされる。
-
-{
-  "foo test": "777",
-  "object test": "{foo: "foo"}"
-}
