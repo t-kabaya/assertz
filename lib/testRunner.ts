@@ -7,10 +7,9 @@ import pipe from '../utils/pipelineOperator'
 import log from '../utils/logUtils'
 import { runSnapShotTest } from './snapshot'
 import { SNAP } from '../index'
+import { ROOT_FOLDER } from '../env'
 
 export const runTests = async(paths: string[]) => {
-
-  // storeに全てのtest objectを入れてしまう。
   for await (const path of paths) {
     store.push({fileName: path})
     require(path)
@@ -24,7 +23,7 @@ export const runTests = async(paths: string[]) => {
 
   const reducer = (acc: any, val: any) => {
     if (val.fileName) {
-      // ファイルネームを一時的にセット
+      // set tmp fileName
       acc.fileName = val.fileName
 
       return acc
@@ -36,8 +35,6 @@ export const runTests = async(paths: string[]) => {
 
       return acc
     }
-
-    // snap
 
     if (_.isEqual(val.received, val.expected)) {
       // テスト成功
@@ -52,7 +49,8 @@ export const runTests = async(paths: string[]) => {
         val.testName,
         val.received,
         val.expected,
-        acc.fileName.replace(/.+\//, '')
+        acc.fileName,
+        ROOT_FOLDER
       ),
       log
     )
