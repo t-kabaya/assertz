@@ -11,27 +11,27 @@ import { ROOT_FOLDER } from '../env'
 
 export const runTests = async(paths: string[]) => {
   for await (const path of paths) {
-    store.push({fileName: path})
+    store.push({path})
     require(path)
   }
   // 以下のように、ちょっといびつなarray of jsonが帰ってくる。
   // [
-  //   {fileName: './sandbox.js'},
+  //   {path: './sandbox.js'},
   //   {testName: 'lol', received: 777, expected: 666},
   //   {testName: 'lol', received: 'foo', expected: 'bar'}
   // ]
 
   const reducer = (acc: any, val: any) => {
-    if (val.fileName) {
-      // set tmp fileName
-      acc.fileName = val.fileName
+    if (val.path) {
+      // set tmp path
+      acc.path = val.path
 
       return acc
     }
 
     // snap shot test
     if (val.type === SNAP) {
-      acc.snapShotStore.push({snap: val.snap, testName: val.testName, path: acc.fileName})
+      acc.snapShotStore.push({snap: val.snap, testName: val.testName, path: acc.path})
 
       return acc
     }
@@ -49,7 +49,7 @@ export const runTests = async(paths: string[]) => {
         val.testName,
         val.received,
         val.expected,
-        acc.fileName,
+        acc.path,
         ROOT_FOLDER
       ),
       log
@@ -58,7 +58,7 @@ export const runTests = async(paths: string[]) => {
     return acc
   }
 
-  const testResult = store.reduce(reducer, {fileName: '', successCount: 0, failureCount: 0, snapShotStore: []})
+  const testResult = store.reduce(reducer, {path: '', successCount: 0, failureCount: 0, snapShotStore: []})
 
   /* -------------------- show summary --------------------- */
   pipe(testResult, createSummary, log)
