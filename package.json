@@ -31,6 +31,7 @@
     "lodash": "^4.17.15",
     "meow": "^5.0.0",
     "stack-trace": "^0.0.10",
+    "strip-ansi": "^6.0.0",
     "update-notifier": "^3.0.1"
   },
   "devDependencies": {

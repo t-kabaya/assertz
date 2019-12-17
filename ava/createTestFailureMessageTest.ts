@@ -3,14 +3,17 @@ const {
   createTestFailureMessage,
 } = require('../lib/createTestFailureMessage')
 import { ROOT_FOLDER } from'../env'
+const stripAnsi = require('strip-ansi')
 
 /* -------------------- createTestFailureMessage --------------------- */
 
 test('createTestFailureMessage', async (t: any) => {
-  const actual = createTestFailureMessage('test name', 777, 666, ROOT_FOLDER + '/lol', ROOT_FOLDER)
+  const path = ROOT_FOLDER + '/test/foo.test.ts'
+  const actual = stripAnsi(createTestFailureMessage('test name', 777, 666, path, ROOT_FOLDER))
 
-  const expected = `
-test name < ./ava
+  const expected = `-----------------------------------------------------
+
+test name < ./test/foo.test.ts
 
 diff:
 -777

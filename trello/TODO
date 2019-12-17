@@ -18,5 +18,3 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 ・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
 ・snapshotが、__snapshot__フォルダに保存されるようにする。
-・ターミナルをクリックすると、テストへ移動できるように。（例えば、ターミナル上で、README.mdだと、移動出来ないが、./README.mdだと移動出来る。）
-createTestFailureMessageTestをパスさせる。
