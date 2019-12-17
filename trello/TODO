@@ -18,3 +18,6 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 ・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
 ・snapshotが、__snapshot__フォルダに保存されるようにする。
+・huskyで、テストをpushする前に、avaを走らせるようにする。
+・yarn run testをすると、message.txt, message.txt.snap, message2txt.snapのようなゴミファイルが作成される。
+・snapshotと、snapShotが混在している。直す。

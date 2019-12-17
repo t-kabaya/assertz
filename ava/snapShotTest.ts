@@ -4,7 +4,7 @@ const test: any = require('ava')
 import {UNIT_TEST, SNAP} from '../index'
 const { deepEqual } = require('./avaUtils')
 const { diffString } = require('json-diff')
-const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot } = require('../lib/snapShot')
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot,  createSnapshotPath } = require('../lib/snapShot')
 // import * as snapShot from '../lib/snapShot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
@@ -333,3 +333,18 @@ test('excludeNotSnapshot: must return blank', (t: any) => {
 
 //   deepEqual(t, actual, expected)
 // })
+
+/*------------------------------- createSnapshotPath ----------------------------------*/
+
+test('createSnapshotPath: must return correct value', (t: any) => {
+  const input = './test/foo.test.js'
+
+  const expected = './test/__snapshot__/foo.test.snap'
+
+  const actual = createSnapshotPath(input)
+
+  t.deepEqual(actual, expected)
+})
+
+
+

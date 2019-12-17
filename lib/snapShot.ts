@@ -20,7 +20,7 @@ export const updateSnapshot = async (paths: string[]) => {
   }
 
   pipe(store, excludeNotSnapshot, createSnapshotJson).forEach((snapObj: {path: string, snap: object}) => 
-    fs.writeFileSync(createSnapShotPath(snapObj.path), JSON.stringify(snapObj.snap))
+    fs.writeFileSync(createSnapshotPath(snapObj.path), JSON.stringify(snapObj.snap))
   )
   console.log('updated snapShot')
 }
@@ -83,7 +83,7 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
 
 export const readSnapShot = (path: string) => {
   try {
-    return JSON.parse(fs.readFileSync(createSnapShotPath(path), 'utf8'))
+    return JSON.parse(fs.readFileSync(createSnapshotPath(path), 'utf8'))
   } catch (e) {
     return []
   }
@@ -94,15 +94,15 @@ const writeSnapShot = (newSnapShot: snapType[]): void => {
   newSnapShot.forEach(newSS => {
     try {
       console.log('created snapshot')
-      fs.writeFileSync(createSnapShotPath(newSS.path), JSON.stringify(newSnapShot))
+      fs.writeFileSync(createSnapshotPath(newSS.path), JSON.stringify(newSnapShot))
     } catch (e) {
       // noop
     }
   })
 }
 
-const createSnapShotPath = (path: string) => (
-  path.replace('.js', '.snap').replace('.ts', '.snap')
+export const createSnapshotPath = (path: string) => (
+  path.replace(/\/[a-zA-Z.]+.js/gi, '/__snapshot__/snap').replace('.ts', '.snap')
 )
 
 export const groupByPath = (testObject: snapType[]): snapType[][] => {
