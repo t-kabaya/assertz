@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 const { diffString } = require('json-diff')
 import { store } from './store'
 import pipe from '../utils/pipelineOperator'
+const fsPath = require('fs-path')
 
 // use type instead of interface, because type is enough for my purpose.
 type snapType = {
@@ -71,8 +72,8 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
     const path: string = newSnapShot[0].path
     const oldSnapShot: snapType[] = readSnapShot(path)
     // if oldSnapShot is null, then create new snapshot.
-    if (oldSnapShot.length === 0) {
-      writeSnapShot(newSnapShot)
+    if (!!oldSnapShot.length) {
+      writeSnapshot(newSnapShot)
     } else {
       return createSnapShotReport(oldSnapShot, newSnapShot)
     }
@@ -90,13 +91,13 @@ export const readSnapShot = (path: string) => {
 }
 
 
-const writeSnapShot = (newSnapShot: snapType[]): void => {
+const writeSnapshot = (newSnapShot: snapType[]): void => {
   newSnapShot.forEach(newSS => {
     try {
       console.log('created snapshot')
-      fs.writeFileSync(createSnapshotPath(newSS.path), JSON.stringify(newSnapShot))
+      fsPath.writeFileSync(createSnapshotPath(newSS.path), JSON.stringify(newSnapShot))
     } catch (e) {
-      // noop
+      console.log('error at writeSnapshot')
     }
   })
 }
@@ -105,7 +106,7 @@ export const createSnapshotPath = (path: string) => {
   const tmp = path.split('/')
   const fileName = tmp.pop()
   const pathWithoutFileName = tmp.join('/')
-  
+
   return pathWithoutFileName + '/__snapshot__/' + fileName?.replace('.js', '.snap')?.replace('.ts', '.snap')
 }
 
