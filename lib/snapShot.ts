@@ -101,9 +101,13 @@ const writeSnapShot = (newSnapShot: snapType[]): void => {
   })
 }
 
-export const createSnapshotPath = (path: string) => (
-  path.replace(/\/[a-zA-Z.]+.js/gi, '/__snapshot__/snap').replace('.ts', '.snap')
-)
+export const createSnapshotPath = (path: string) => {
+  const tmp = path.split('/')
+  const fileName = tmp.pop()
+  const pathWithoutFileName = tmp.join('/')
+  
+  return pathWithoutFileName + '/__snapshot__/' + fileName?.replace('.js', '.snap')?.replace('.ts', '.snap')
+}
 
 export const groupByPath = (testObject: snapType[]): snapType[][] => {
   const paths = _.sortedUniq(testObject.map(testObj => testObj.path))
