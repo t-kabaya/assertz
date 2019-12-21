@@ -12,7 +12,7 @@ type snapType = {
   path: string;
 }
 
-type storeType =  ({path: string} | {type: string, testName: string, snap: object})[]
+type storeType = ({path: string} | {type: string, testName: string, snap: object})[]
 
 export const updateSnapshot = async (paths: string[]) => {
   for await (const path of paths) {
@@ -26,16 +26,16 @@ export const updateSnapshot = async (paths: string[]) => {
   console.log('updated snapShot')
 }
 
-export const excludeNotSnapshot = (store: any) => {
-  const tmpArr = store.filter((obj: any) => obj.type !== "unitTest")
-  const isSnapshot = tmpArr.filter((obj: any) => obj.type === "snap").length === 0
+export const excludeNotSnapshot = (store: any[]) => {
+  const snapTests = store.filter((obj: any) => obj.type !== "unitTest")
+  const isExistSnap = snapTests.filter((obj: any) => obj.type === "snap").length === 0
   
-  if (isSnapshot) return []
+  if (isExistSnap) return []
   
-  return tmpArr.filter((obj: any, i: any) => {
-    if (i === tmpArr.length) return true
+  return snapTests.filter((obj: any, i: any) => {
+    if (i === snapTests.length) return true
     
-    return !(obj && obj.path && tmpArr[i + 1] && tmpArr[i + 1].path)
+    return !(obj?.path && snapTests[i + 1]?.path)
   })
 }
 
