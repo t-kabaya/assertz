@@ -3,6 +3,8 @@ import * as _ from 'lodash'
 const { diffString } = require('json-diff')
 import { store } from './store'
 import pipe from '../utils/pipelineOperator'
+// node.jsのwriteFileする際に、ファイルが存在しないと、エラーが出る。
+// fsPathを使用すると、もし、ファイルが存在しない時は、ファイルを作成してくれる。
 const fsPath = require('fs-path')
 
 // use type instead of interface, because type is enough for my purpose.
@@ -20,10 +22,11 @@ export const updateSnapshot = async (paths: string[]) => {
     require(path)
   }
 
+  console.log('start update snapshot')
   pipe(store, excludeNotSnapshot, createSnapshotJson).forEach((snapObj: {path: string, snap: object}) => 
-    fs.writeFileSync(createSnapshotPath(snapObj.path), JSON.stringify(snapObj.snap))
+    fsPath.writeFileSync(createSnapshotPath(snapObj.path), JSON.stringify(snapObj.snap))
   )
-  console.log('updated snapShot')
+  console.log('updated snapshot')
 }
 
 export const excludeNotSnapshot = (store: any[]) => {
