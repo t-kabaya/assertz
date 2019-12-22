@@ -17,7 +17,6 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 ・watch modeで、uを押すと、snapShotをアップデート出来るようにする。
 ・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
-・snapshotが、__snapshot__フォルダに保存されるようにする。
 ・huskyで、テストをpushする前に、avaを走らせるようにする。
 ・snapshotと、snapShotが混在している。直す。
-・createSnapshotPathを通す。
+・新しいsnapshotを書き込んでもメッセージが表示されない。writeOnlyNewSnapshotのテストを書く。（ちゃんとmessageが返されるかどうかのテストを記述）

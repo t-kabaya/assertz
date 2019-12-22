@@ -71,19 +71,43 @@ ${diffString(oldSS.snap, newSS.snap)}
 export const runSnapShotTest = (snapShotTests: snapType[]): string => {
   const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
     
-  const snapShotReport: string = groupedSnapShots.map((newSnapShot: snapType[]) => {
-    const path: string = newSnapShot[0].path
-    const oldSnapShot: snapType[] = readSnapShot(path)
+  const snapShotReport: string = groupedSnapShots.map((newSnapshot: snapType[]) => {
+    const { path } = newSnapshot[0]
+    const oldSnapshot: snapType[] = readSnapShot(path)
     // if oldSnapShot is null, then create new snapshot.
-    if (!!oldSnapShot.length) {
-      writeSnapshot(newSnapShot)
-    } else {
-      return createSnapShotReport(oldSnapShot, newSnapShot)
+
+    let message = ''
+
+    message += writeOnlyNewSnapshot(oldSnapshot, newSnapshot)
+    // ここの条件が、おかしいな。
+    if (!_.isEqual(oldSnapshot.sort(), newSnapshot.sort())) {
+      message += createSnapShotReport(oldSnapshot, newSnapshot)
     }
+
+    return message
   }).flat().filter(Boolean).join('\n')
 
   return snapShotReport + 'To update snapshot run assertz -u'
 }
+
+export const writeOnlyNewSnapshot = (oldSnapShot: snapType[], newSnapshot: snapType[]): string => {
+  const newSnapshotNames = oldSnapShot.map(x => x.testName).filter(x => newSnapshot.map(x => x.testName).includes(x))
+
+  if (newSnapshotNames.length = 0) return ''
+
+  writeSnapshot(newSnapshot)
+
+  return newSnapshotNames.join(' new! snap\n')
+}
+
+// 上記のパターンは、３種類
+// 既存のnameに存在しないsnapshotが出来ている。
+// ⇨ 新しいsnapshotを書き込む。
+// その後、
+// if(既存のjsonとtestNameが同じだが、内容が違う) {
+// ⇨ 警告を出す。
+// else {既存のjsonとtestNameが同じだし、内容も同じ
+// ⇨ noop
 
 export const readSnapShot = (path: string) => {
   try {
@@ -95,9 +119,8 @@ export const readSnapShot = (path: string) => {
 
 
 const writeSnapshot = (newSnapShot: snapType[]): void => {
-  newSnapShot.forEach(newSS => {
+  newSnapShot.sort().forEach(newSS => {
     try {
-      console.log('created snapshot')
       fsPath.writeFileSync(createSnapshotPath(newSS.path), JSON.stringify(newSnapShot))
     } catch (e) {
       console.log('error at writeSnapshot')
@@ -121,8 +144,8 @@ export const groupByPath = (testObject: snapType[]): snapType[][] => {
 
 // path毎に分けられた、arrayがinputとして与えられる。それに対して、pathのファイルの中身を読み、updateする必要があれば、
 // アップデートする。
-export const shouldUpdateSnapShot = (oldSnapHot: string, newSnapShot: string) => (
-  oldSnapHot !== newSnapShot
+export const shouldUpdateSnapShot = (oldSnapshot: string, newSnapshot: string) => (
+  oldSnapshot !== newSnapshot
 )
 
 export const deepEqual = (a: object, b: object) => (

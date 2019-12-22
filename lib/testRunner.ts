@@ -6,7 +6,7 @@ import { createSummary } from './createSummary'
 import pipe from '../utils/pipelineOperator'
 import log from '../utils/logUtils'
 import { runSnapShotTest } from './snapshot'
-import { SNAP } from '../index'
+// import { SNAP } from '../index'
 import { ROOT_FOLDER } from '../env'
 
 export const runTests = async(paths: string[]) => {
@@ -30,7 +30,9 @@ export const runTests = async(paths: string[]) => {
     }
 
     // snap shot test
-    if (val.type === SNAP) {
+    // console.log({ beforeIfOfSnap: val})
+    // なぜかは分からないが、Index.jsから、importしたSNAP = undefinedとなる。
+    if (val.type == 'snap') {
       acc.snapShotStore.push({snap: val.snap, testName: val.testName, path: acc.path})
 
       return acc
