@@ -4,7 +4,7 @@ const test: any = require('ava')
 import {UNIT_TEST, SNAP} from '../index'
 const { deepEqual } = require('./avaUtils')
 const { diffString } = require('json-diff')
-const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot,  createSnapshotPath } = require('../lib/snapShot')
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot,  createSnapshotPath, writeOnlyNewSnapshot } = require('../lib/snapShot')
 // import * as snapShot from '../lib/snapShot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
@@ -345,6 +345,81 @@ test('createSnapshotPath: must return correct value', (t: any) => {
 
   t.deepEqual(actual, expected)
 })
+
+/*------------------------------- writeOnlyNewSnapshot ----------------------------------*/
+
+// TODO:: このテストを実行すると、実際にファイルが書き込まれてしまう。なんとかしなければ...
+test('writeOnlyNewSnapshot: must return new test names', (t: any) => {
+  const oldSnapshot = [
+    {
+      testName: 'foo',
+      snap: {
+        foo: "foo"
+      },
+      path: './test/foo.snap'
+    }
+  ]
+
+  const newSnapshot = [
+    {
+      testName: 'foo',
+      snap: {
+        bar: "foo"
+      },
+      path: './test/foo.snap'
+    },
+    {
+      testName: 'bar',
+      snap: 666,
+      path: './test/foo.snap'
+    },
+    {
+      testName: 'baz',
+      snap: 666,
+      path: './test/foo.snap'
+    }
+  ]
+
+  const expected = `created new snapshot in
+./test/foo.snap
+bar
+baz
+`
+
+  const actual = writeOnlyNewSnapshot(oldSnapshot, newSnapshot)
+
+  t.deepEqual(actual, expected)
+})
+
+test('writeOnlyNewSnapshot: no change snapshot must return blank string', (t: any) => {
+  const oldSnapshot = [
+    {
+      testName: 'foo',
+      snap: {
+        foo: "foo"
+      },
+      path: './test/foo.sna'
+    }
+  ]p
+
+  const newSnapshot = [
+    {
+      testName: 'foo',
+      snap: {
+        bar: "foo"
+      },
+      path: './test/foo.snap'
+    }
+  ]
+
+  const expected = ''
+
+  const actual = writeOnlyNewSnapshot(oldSnapshot, newSnapshot)
+
+  t.deepEqual(actual, expected)
+})
+
+
 
 
 

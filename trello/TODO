@@ -13,6 +13,8 @@ runSnapShotTestの、単体テストを書くには、standaloneのfunctionのst
 https://ylv.io/stubing-a-standalone-function-in-javascript/
 以上の記事を読むこと。
 
+yarn run watchすると、複数回テストが走らされる？
+
 ## 今やること 
 ・watch modeで、uを押すと、snapShotをアップデート出来るようにする。
 ・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
@@ -20,3 +22,5 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 ・huskyで、テストをpushする前に、avaを走らせるようにする。
 ・snapshotと、snapShotが混在している。直す。
 ・新しいsnapshotを書き込んでもメッセージが表示されない。writeOnlyNewSnapshotのテストを書く。（ちゃんとmessageが返されるかどうかのテストを記述）
+・writeOnlyNewSnapshotのテストを作成する。
+・新規に.snapファイルを作成した時の考慮が抜けている。

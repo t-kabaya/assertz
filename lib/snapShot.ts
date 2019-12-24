@@ -77,6 +77,7 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
     // if oldSnapShot is null, then create new snapshot.
 
     let message = ''
+    console.log({newSnapshot})
 
     message += writeOnlyNewSnapshot(oldSnapshot, newSnapshot)
     // ここの条件が、おかしいな。
@@ -90,14 +91,16 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
   return snapShotReport + 'To update snapshot run assertz -u'
 }
 
+// TODO: 新しくファイルを作成する時の考慮が抜けている。
 export const writeOnlyNewSnapshot = (oldSnapShot: snapType[], newSnapshot: snapType[]): string => {
-  const newSnapshotNames = oldSnapShot.map(x => x.testName).filter(x => newSnapshot.map(x => x.testName).includes(x))
+  const { path } = newSnapshot[0]
+  const newSnapshotNames: string[] = newSnapshot.map(x => x.testName).filter(x => !oldSnapShot.map(x => x.testName).includes(x))
 
-  if (newSnapshotNames.length = 0) return ''
+  if (newSnapshotNames.length === 0) return ''
 
   writeSnapshot(newSnapshot)
 
-  return newSnapshotNames.join(' new! snap\n')
+  return 'created new snapshot in\n'  + path + '\n' + newSnapshotNames.join('\n') + '\n'
 }
 
 // 上記のパターンは、３種類
