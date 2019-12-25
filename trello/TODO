@@ -21,6 +21,3 @@ yarn run watchすると、複数回テストが走らされる？
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
 ・huskyで、テストをpushする前に、avaを走らせるようにする。
 ・snapshotと、snapShotが混在している。直す。
-・新しいsnapshotを書き込んでもメッセージが表示されない。writeOnlyNewSnapshotのテストを書く。（ちゃんとmessageが返されるかどうかのテストを記述）
-・writeOnlyNewSnapshotのテストを作成する。
-・新規に.snapファイルを作成した時の考慮が抜けている。

@@ -400,7 +400,7 @@ test('writeOnlyNewSnapshot: no change snapshot must return blank string', (t: an
       },
       path: './test/foo.sna'
     }
-  ]p
+  ]
 
   const newSnapshot = [
     {
@@ -419,7 +419,26 @@ test('writeOnlyNewSnapshot: no change snapshot must return blank string', (t: an
   t.deepEqual(actual, expected)
 })
 
+// 新規に作成した.test.jsファイルに、snap()が含まれていた場合、.snapファイルの作成を行う。
+test('writeOnlyNewSnapshot: new file of snap test must create .snap file', (t: any) => {
+  const oldSnapshot: [] = []
 
+  const newSnapshot = [
+    {
+      testName: 'foo',
+      snap: {
+        bar: "foo"
+      },
+      path: './test/foo.snap'
+    }
+  ]
 
+  const expected = `created new snapshot in
+./test/foo.snap
+foo
+`
 
+  const actual = writeOnlyNewSnapshot(oldSnapshot, newSnapshot)
 
+  t.deepEqual(actual, expected)
+})
