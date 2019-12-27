@@ -12,6 +12,7 @@ import { ROOT_FOLDER } from '../env'
 export const runTests = async(paths: string[]) => {
   for await (const path of paths) {
     store.push({path})
+    // exec node file by require
     require(path)
   }
   // 以下のように、ちょっといびつなarray of jsonが帰ってくる。
@@ -23,7 +24,7 @@ export const runTests = async(paths: string[]) => {
 
   const reducer = (acc: any, val: any) => {
     if (val.path) {
-      // set tmp path
+      // set path
       acc.path = val.path
 
       return acc
@@ -76,7 +77,7 @@ export const runTests = async(paths: string[]) => {
 export const findTests = (dir: string): string[] => {
   const testPath: string[] = []
 
-  const walk = (dir: string) => {
+  const find = (dir: string) => {
     const files = fs.readdirSync(dir)
 
     files
@@ -96,10 +97,10 @@ export const findTests = (dir: string): string[] => {
 
         return stat.isDirectory()
       })
-      .forEach((childDir: string) => walk(dir + '/' + childDir))
+      .forEach((childDir: string) => find(dir + '/' + childDir))
   }
 
-  walk(dir)
+  find(dir)
 
   return testPath
 }
