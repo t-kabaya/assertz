@@ -34,7 +34,7 @@ export const runTests = async(paths: string[]) => {
     // console.log({ beforeIfOfSnap: val})
     // なぜかは分からないが、Index.jsから、importしたSNAP = undefinedとなる。
     if (val.type == 'snap') {
-      acc.snapShotStore.push({snap: val.snap, testName: val.testName, path: acc.path})
+      acc.snapshotStore.push({snap: val.snap, testName: val.testName, path: acc.path})
 
       return acc
     }
@@ -61,15 +61,15 @@ export const runTests = async(paths: string[]) => {
     return acc
   }
 
-  const testResult = store.reduce(reducer, {path: '', successCount: 0, failureCount: 0, snapShotStore: []})
+  const testResult = store.reduce(reducer, {path: '', successCount: 0, failureCount: 0, snapshotStore: []})
 
   /* -------------------- show summary --------------------- */
   pipe(testResult, createSummary, log)
 
-  const { snapShotStore } = testResult
-  const snapShotResult = runSnapShotTest(snapShotStore)
-  console.log(snapShotResult)
-  // findFailureTest(snapShotStore)
+  const { snapshotStore } = testResult
+  const snapshotResult = runSnapShotTest(snapshotStore)
+  console.log(snapshotResult)
+  // findFailureTest(snapshotStore)
 
 }
 

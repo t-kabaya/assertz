@@ -5,7 +5,7 @@ import * as commander from 'commander'
 import * as fs from 'fs'
 import { findTests, runTests } from './lib/testRunner'
 import { ROOT_FOLDER } from './env'
-import { updateSnapshot } from './lib/snapShot'
+import { updateSnapshot } from './lib/snapshot'
 
 commander
   .option('-d, --debug', 'output extra debugging')

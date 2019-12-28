@@ -4,8 +4,8 @@ const test: any = require('ava')
 import {UNIT_TEST, SNAP} from '../index'
 const { deepEqual } = require('./avaUtils')
 const { diffString } = require('json-diff')
-const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot,  createSnapshotPath, writeOnlyNewSnapshot } = require('../lib/snapShot')
-// import * as snapShot from '../lib/snapShot'
+const { readSnapShot, groupByPath, shouldUpdateSnapShot, createSnapShotReport, createSnapshotJson, excludeNotSnapshot,  createSnapshotPath, writeOnlyNewSnapshot } = require('../lib/snapshot')
+// import * as snapshot from '../lib/snapshot'
 
 /*----------------------------------------- readSnapShot --------------------------------------------*/
 
@@ -87,8 +87,8 @@ test('groupByPath: must return nested array', (t: any) => {
 
 /*---------------------------------- maybeUpdateSnapShot ------------------------------------*/
 
-// 古いsnapShotと、新しいsnapShotが異なる場合、trueを返さなくてはならない。
-test('shouldUpdateSnapShot: if old snapShot and new snapShot is different, then return true', (t: any) => {
+// 古いsnapshotと、新しいsnapshotが異なる場合、trueを返さなくてはならない。
+test('shouldUpdateSnapShot: if old snapshot and new snapshot is different, then return true', (t: any) => {
   const oldSnapShot =
     [
       {
@@ -231,10 +231,10 @@ ${diffString({foo: 'foo'}, {bar: 'bar'})}
 // test('sinon stubing example', (t: any) => {
 //   console.log(runSnapShotTest)
 
-//   sinon.stub(snapShot, 'readSnapShot').returns('read snapShot')
+//   sinon.stub(snapshot, 'readSnapShot').returns('read snapshot')
 
 
-//   const actual = snapShot.readSnapShot('oo')
+//   const actual = snapshot.readSnapShot('oo')
 
 //   deepEqual(t, actual, [])
 // })

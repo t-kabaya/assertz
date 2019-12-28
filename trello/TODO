@@ -16,8 +16,8 @@ https://ylv.io/stubing-a-standalone-function-in-javascript/
 yarn run watchすると、複数回テストが走らされる？
 
 ## 今やること 
-・watch modeで、uを押すと、snapShotをアップデート出来るようにする。
-・新しいsnapShotTestが存在する時は、updateしたsnapShotの数と、名前を表示したい。
+・watch modeで、uを押すと、snapshotをアップデート出来るようにする。
+・新しいsnapshotTestが存在する時は、updateしたsnapshotの数と、名前を表示したい。
 ・snapshotをアップデートする際に、storeに、snapshotが含まれていないpathが出来てしまう。そのため、excludeSnapshotを完成させる。
 ・huskyで、テストをpushする前に、avaを走らせるようにする。
-・snapshotと、snapShotが混在している。直す。
+・snapshotと、snapshotが混在している。直す。

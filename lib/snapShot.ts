@@ -68,10 +68,10 @@ ${diffString(oldSS.snap, newSS.snap)}
 )
 
 
-export const runSnapShotTest = (snapShotTests: snapType[]): string => {
-  const groupedSnapShots: snapType[][] = groupByPath(snapShotTests)
+export const runSnapShotTest = (snapshotTests: snapType[]): string => {
+  const groupedSnapShots: snapType[][] = groupByPath(snapshotTests)
     
-  const snapShotReport: string = groupedSnapShots.map((newSnapshot: snapType[]) => {
+  const snapshotReport: string = groupedSnapShots.map((newSnapshot: snapType[]) => {
     const { path } = newSnapshot[0]
     const oldSnapshot: snapType[] = readSnapShot(path)
     // if oldSnapShot is null, then create new snapshot.
@@ -88,13 +88,13 @@ export const runSnapShotTest = (snapShotTests: snapType[]): string => {
     return message
   }).flat().filter(Boolean).join('\n')
 
-  return snapShotReport + 'To update snapshot run assertz -u'
+  return snapshotReport + 'To update snapshot run assertz -u'
 }
 
-// TODO: 新しくファイルを作成する時の考慮が抜けている。
-export const writeOnlyNewSnapshot = (oldSnapShot: snapType[], newSnapshot: snapType[]): string => {
+export const writeOnlyNewSnapshot = (oldSnapShot: snapType[] | [], newSnapshot: snapType[]): string => {
   const { path } = newSnapshot[0]
-  const newSnapshotNames: string[] = newSnapshot.map(x => x.testName).filter(x => !oldSnapShot.map(x => x.testName).includes(x))
+  const newSnapshotNames: string[] = newSnapshot.map((x: any) => x.testName)
+    .filter(({}: any) => !oldSnapShot?.some((x: any) => x.testName == x))
 
   if (newSnapshotNames.length === 0) return ''
 
